@@ -1,0 +1,36 @@
+{
+  "name": "epoll",
+  "version": "0.0.1",
+  "description": "",
+  "main": "epoll.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Tests can only be run manually from the command line.\" && exit 1",
+    "install": "node-gyp rebuild"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fivdi/epoll.git"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "dependencies": {
+    "nan": "~0.4.1"
+  },
+  "keywords": [
+    "epoll",
+    "epollpri",
+    "poll",
+    "pollpri",
+    "gpio",
+    "interrupt",
+    "linux"
+  ],
+  "author": "fivdi",
+  "license": "MIT",
+  "gypfile": true
+}
+

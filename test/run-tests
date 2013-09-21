@@ -1,0 +1,8 @@
+#!/bin/sh
+node do-nothing
+echo do-nothing - ok
+node do-almost-nothing
+echo do-almost-nothing - ok
+node one-shot
+node two-shot
+
