@@ -19,3 +19,7 @@ echo brute-force-leak-check - started
 node brute-force-leak-check
 echo brute-force-leak-check - finished
 
+echo performance-check - started
+node performance-check
+echo performance-check - finished
+
