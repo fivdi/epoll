@@ -5,9 +5,7 @@ var Epoll = require("../build/Release/epoll").Epoll,
   util = require('./util'),
   eventCount = 0,
   epoll,
-  fd = 0; // stdin
-
-console.log('two-shot');
+  stdin = 0; // fd for stdin
 
 epoll = new Epoll(function (err, fd, events) {
   eventCount++;
@@ -18,20 +16,15 @@ epoll = new Epoll(function (err, fd, events) {
     }, 500);
   } else if (eventCount === 2 && events & Epoll.EPOLLIN) {
     setTimeout(function () {
-      util.read(fd);
-
+      util.read(fd); // read user input (the enter key)
       epoll.remove(fd).close();
-
-      if (eventCount === 2) {
-        console.log('two-shot ok');
-      }
     }, 500);
   } else {
     console.log('two-shot *** Error: unexpected event');
   }
 });
 
-epoll.add(fd, Epoll.EPOLLIN | Epoll.EPOLLONESHOT);
+epoll.add(stdin, Epoll.EPOLLIN | Epoll.EPOLLONESHOT);
 
 console.log('...Please press the enter key once.');
 

@@ -5,5 +5,3 @@ var Epoll = require("../build/Release/epoll").Epoll,
   epoll0 = new Epoll(function(){}),
   epoll1 = new Epoll(function(){});
 
-console.log('do-nothing');
-
