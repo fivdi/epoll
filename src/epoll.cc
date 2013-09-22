@@ -1,3 +1,5 @@
+#ifdef __linux__
+
 #include <errno.h> // errno
 #include <pthread.h>
 #include <stdio.h> // TODO - Remove
@@ -348,3 +350,4 @@ extern "C" void Init(Handle<Object> exports) {
 
 NODE_MODULE(epoll, Init)
 
+#endif
