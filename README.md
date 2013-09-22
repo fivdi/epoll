@@ -11,7 +11,7 @@ to detect interrupts.
 
 ## Installation
 
-    $ npm install epoll
+    $ [sudo] npm install epoll
 
 ## API
 
