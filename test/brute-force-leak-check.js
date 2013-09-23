@@ -8,7 +8,7 @@ var Epoll = require("../build/Release/epoll").Epoll,
   stdin = 0; // fd for stdin
 
 function once() {
-  var epoll = new Epoll(function (error, fd, events) {
+  var epoll = new Epoll(function (err, fd, events) {
     epoll.remove(fd).close();
 
     count++;

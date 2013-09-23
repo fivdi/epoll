@@ -6,7 +6,7 @@ var Epoll = require("../build/Release/epoll").Epoll,
   count = 0,
   stdin = 0; // fd for stdin
 
-var epoll = new Epoll(function (error, fd, events) {
+var epoll = new Epoll(function (err, fd, events) {
   count++;
   if (count % 100000 === 0) {
     console.log(count + ' events detected');
