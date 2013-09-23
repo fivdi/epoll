@@ -72,7 +72,8 @@ static void start_watcher() {
     return;
   }
 
-  err = uv_async_init(uv_default_loop(), &watcher_async_g, Epoll::DispatchEvent);
+  err = uv_async_init(uv_default_loop(), &watcher_async_g,
+    Epoll::DispatchEvent);
   if (err < 0) {
     close(watcher_epfd_g);
     uv_sem_destroy(&watcher_sem_g);
@@ -80,7 +81,7 @@ static void start_watcher() {
     return;
   }
 
-  // Prevent watcher_async_g from keeping the event loop alive.
+  // Prevent watcher_async_g from keeping event loop alive, for the time being.
   uv_unref((uv_handle_t *) &watcher_async_g);
 
   err = pthread_create(&theread_id, 0, watcher, 0);
@@ -168,10 +169,11 @@ NAN_METHOD(Epoll::Add) {
   Epoll *epoll = ObjectWrap::Unwrap<Epoll>(args.This());
 
   if (epoll->closed_)
-    return NanThrowError("add can't be called after close has been called");
+    return NanThrowError("add can't be called after calling close");
 
   if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsUint32())
-    return NanThrowError("incorrect arguments passed to add(int fd, uint32_t events)");
+    return NanThrowError("incorrect arguments passed to add"
+      "(int fd, uint32_t events)");
 
   int err = epoll->Add(args[0]->Int32Value(), args[1]->Uint32Value());
   if (err != 0)
@@ -187,10 +189,11 @@ NAN_METHOD(Epoll::Modify) {
   Epoll *epoll = ObjectWrap::Unwrap<Epoll>(args.This());
 
   if (epoll->closed_)
-    return NanThrowError("modify can't be called after close has been called");
+    return NanThrowError("modify can't be called after calling close");
 
   if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsUint32())
-    return NanThrowError("incorrect arguments passed to maodify(int fd, uint32_t events)");
+    return NanThrowError("incorrect arguments passed to maodify"
+      "(int fd, uint32_t events)");
 
   int err = epoll->Modify(args[0]->Int32Value(), args[1]->Uint32Value());
   if (err != 0)
@@ -206,7 +209,7 @@ NAN_METHOD(Epoll::Remove) {
   Epoll *epoll = ObjectWrap::Unwrap<Epoll>(args.This());
 
   if (epoll->closed_)
-    return NanThrowError("remove can't be called after close has been called");
+    return NanThrowError("remove can't be called after calling close");
 
   if (args.Length() < 1 || !args[0]->IsInt32())
     return NanThrowError("incorrect arguments passed to remove(int fd)");
@@ -237,14 +240,14 @@ NAN_METHOD(Epoll::Close) {
 
 int Epoll::Add(int fd, uint32_t events) {
   struct epoll_event event;
-  event.events = events; // EPOLLIN; // EPOLLPRI;
+  event.events = events;
   event.data.fd = fd;
 
   if (epoll_ctl(watcher_epfd_g, EPOLL_CTL_ADD, fd, &event) == -1)
     return errno;
 
-  fd2epoll.insert(std::pair<int, Epoll*>(fd, this)); // TODO - Error handling, fd may not be there.
-  fds_.push_back(fd); // TODO - Error handling, fd may not be there.
+  fd2epoll.insert(std::pair<int, Epoll*>(fd, this));
+  fds_.push_back(fd);
 
   // Keep event loop alive. uv_unref called in Remove.
   uv_ref((uv_handle_t *) &watcher_async_g);
@@ -261,9 +264,6 @@ int Epoll::Modify(int fd, uint32_t events) {
   if (epoll_ctl(watcher_epfd_g, EPOLL_CTL_MOD, fd, &event) == -1)
     return errno;
 
-  fd2epoll.insert(std::pair<int, Epoll*>(fd, this)); // TODO - Error handling, fd may not be there.
-  fds_.push_back(fd); // TODO - Error handling, fd may not be there.
-
   // Keep event loop alive. uv_unref called in Remove.
   uv_ref((uv_handle_t *) &watcher_async_g);
 
@@ -275,8 +275,8 @@ int Epoll::Remove(int fd) {
   if (epoll_ctl(watcher_epfd_g, EPOLL_CTL_DEL, fd, 0) == -1)
     return errno;
 
-  fd2epoll.erase(fd); // TODO - Error handling, fd may not be there.
-  fds_.remove(fd); // TODO - Error handling, fd may not be there.
+  fd2epoll.erase(fd);
+  fds_.remove(fd);
 
   if (fd2epoll.empty())
     uv_unref((uv_handle_t *) &watcher_async_g);
@@ -292,11 +292,10 @@ int Epoll::Close() {
   callback_ = 0;
   
   std::list<int>::iterator it = fds_.begin();
-  while (it != fds_.end()) {
+  for (; it != fds_.end(); it = fds_.begin()) {
     int err = Remove(*it);
     if (err != 0)
       return err; // TODO - Returning here leaves things messed up.
-    it = fds_.begin();
   }
 
   return 0;
