@@ -307,13 +307,11 @@ void Epoll::DispatchEvent(uv_async_t* handle, int status) {
   // This method is executed in the event loop thread.
   // By the time flow of control arrives here the original Epoll instance that
   // registered interest in the event may no longer have this interest. If
-  // this is the case, the event will silently be ignored.
-  std::map<int, Epoll*>::iterator it = fd2epoll.find(watcher_event_g.data.fd);
+  // this is the case, the event will be silently ignored.
 
+  std::map<int, Epoll*>::iterator it = fd2epoll.find(watcher_event_g.data.fd);
   if (it != fd2epoll.end()) {
     it->second->DispatchEvent(watcher_errno_g, &watcher_event_g);
-  } else {
-    printf("lost interest in %d\n", watcher_event_g.data.fd); // TODO - Remove printf.
   }
 
   uv_sem_post(&watcher_sem_g);
@@ -351,3 +349,4 @@ extern "C" void Init(Handle<Object> exports) {
 NODE_MODULE(epoll, Init)
 
 #endif
+
