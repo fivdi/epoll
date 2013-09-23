@@ -4,6 +4,7 @@
   "description": "",
   "main": "epoll.js",
   "directories": {
+    "example": "example",
     "test": "test"
   },
   "scripts": {
