@@ -7,8 +7,6 @@ var Epoll = require("../build/Release/epoll").Epoll,
   count = 0,
   stdin = 0; // fd for stdin
 
-console.log('...Please press the enter key once.');
-
 function once() {
   var epoll = new Epoll(function (error, fd, events) {
     epoll.remove(fd).close();

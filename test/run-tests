@@ -8,18 +8,18 @@ node do-almost-nothing
 echo do-almost-nothing - finished
 
 echo one-shot - started
-node one-shot
+echo | node one-shot
 echo one-shot - finished
 
 echo two-shot - started
-node two-shot
+echo | node two-shot
 echo two-shot - finished
 
 echo brute-force-leak-check - started
-node brute-force-leak-check
+echo | node brute-force-leak-check
 echo brute-force-leak-check - finished
 
 echo performance-check - started
-node performance-check
+echo | node performance-check
 echo performance-check - finished
 

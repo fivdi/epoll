@@ -22,5 +22,3 @@ epoll = new Epoll(function (err, fd, events) {
 
 epoll.add(stdin, Epoll.EPOLLIN | Epoll.EPOLLONESHOT);
 
-console.log('...Please press the enter key once.');
-
