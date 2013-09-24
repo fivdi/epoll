@@ -22,7 +22,7 @@ by events.
   * remove(fd) - Deregister file descriptor fd.
   * modify(fd, events) - Change the event types associated with file descriptor
 fd.
-  * close(fd) - Deregisters all file descriptors and frees resources.
+  * close(fd) - Deregisters all file descriptors and free resources.
 
 Event Types
 
@@ -39,7 +39,7 @@ Event Types
 
 Now for two examples, one for the Raspberry Pi and one for the BeagleBone.
 
-## Raspberry Pi Example
+## Raspberry Pi
 
 The following example shows how epoll can be used to detect interrupts from a
 momentary push button connected to GPIO #18 (pin P1-12) on the Raspberry Pi.
@@ -93,10 +93,10 @@ pi-unexport script.
 echo 18 > /sys/class/gpio/unexport
 ```
 
-## BeagleBone Example
+## BeagleBone
 
 The following example shows how epoll can be used to detect interrupts from a
-momentary push button connected to GPIO #117 (pin P1-12) on the BeagleBone.
+momentary push button connected to GPIO #117 on the BeagleBone.
 
 Export GPIO #117 as an interrupt generating input using the bb-export script
 from the examples directory.
