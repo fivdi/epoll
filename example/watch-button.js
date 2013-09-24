@@ -12,6 +12,6 @@ fs.readSync(valuefd, buffer, 0, 1, 0);
 poller.add(valuefd, Epoll.EPOLLPRI);
 
 setTimeout(function () {
-  poller.remove(valuefd).close;
+  poller.remove(valuefd).close();
 }, 30000);
 
