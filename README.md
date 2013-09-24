@@ -35,9 +35,15 @@ Event Types
   * Epoll.EPOLLET
   * Epoll.EPOLLONESHOT
 
-## Example
+## Raspberry Pi Example
 
-Export GPIO #18 as an interrupt generating input.
+The following example shows how epoll can be used to detect interrupts from a
+momentary push button connected to GPIO #18 (pin P1-12) on the Raspberry Pi.
+
+Export GPIO #18 as an interrupt generating input using the pi-export script
+from the examples directory.
+
+    $ [sudo] pi-export
 
 ```bash
 #!/bin/sh
@@ -46,8 +52,12 @@ echo in > /sys/class/gpio/gpio18/direction
 echo both > /sys/class/gpio/gpio18/edge
 ```
 
-Assuming there is a momentary push button connected to GPIO #18, the following
-program will be notified by Epoll when the button is presses or released.
+Then run pi-watch-button to be notified every time the button is pressed and
+released.
+
+    $ [sudo] node pi-watch-button
+
+pi-watch-button terminates automatically after 30 seconds.
 
 ```js
 var Epoll = require('epoll').Epoll,
@@ -68,12 +78,17 @@ setTimeout(function () {
 }, 30000);
 ```
 
-Unexport GPIO #18.
+When pi-watch-button has terminated, GPIO #18 can be unexported using the
+pi-unexport script.
+
+    $ [sudo] pi-unexport
 
 ```bash
 #!/bin/sh
 echo 18 > /sys/class/gpio/unexport
 ```
+
+## BeagleBone Example
 
 ## Limitations
 
