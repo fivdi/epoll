@@ -264,9 +264,6 @@ int Epoll::Modify(int fd, uint32_t events) {
   if (epoll_ctl(watcher_epfd_g, EPOLL_CTL_MOD, fd, &event) == -1)
     return errno;
 
-  // Keep event loop alive. uv_unref called in Remove.
-  uv_ref((uv_handle_t *) &watcher_async_g);
-
   return 0;
 }
 
