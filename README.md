@@ -7,7 +7,7 @@ This module was initially written to detect EPOLLPRI events indicating that
 urgent data is available for reading. EPOLLPRI events are triggered by
 interrupt generating [GPIO](https://www.kernel.org/doc/Documentation/gpio.txt)
 pins. The epoll module is used by [onoff](https://github.com/fivdi/onoff)
-to detect interrupts.
+to detect such interrupts.
 
 ## Installation
 
@@ -15,11 +15,13 @@ to detect interrupts.
 
 ## API
 
-  * Epoll(callback) - Constructor. The callback is called when events occur and it gets three
-arguments (err, fd, events).
-  * add(fd, events) - Register file descriptor fd for the event types specified by events.
+  * Epoll(callback) - Constructor. The callback is called when events occur and
+it gets three arguments (err, fd, events).
+  * add(fd, events) - Register file descriptor fd for the event types specified
+by events.
   * remove(fd) - Deregister file descriptor fd.
-  * modify(fd, events) - Change the event types associated with file descriptor fd.
+  * modify(fd, events) - Change the event types associated with file descriptor
+fd.
   * close(fd) - Deregisters all file descriptors and frees resources.
 
 Event Types
@@ -34,6 +36,18 @@ Event Types
   * Epoll.EPOLLONESHOT
 
 ## Example
+
+Export GPIO #18 as an interrupt generating input.
+
+```bash
+#!/bin/sh
+echo 18 > /sys/class/gpio/export
+echo in > /sys/class/gpio/gpio18/direction
+echo both > /sys/class/gpio/gpio18/edge
+```
+
+Assuming there is a momentary push button connected to GPIO #18, the following
+program will be notified by Epoll when the button is presses or released.
 
 ```js
 var Epoll = require('epoll').Epoll,
@@ -52,6 +66,13 @@ poller.add(valuefd, Epoll.EPOLLPRI);
 setTimeout(function () {
   poller.remove(valuefd).close();
 }, 30000);
+```
+
+Unexport GPIO #18.
+
+```bash
+#!/bin/sh
+echo 18 > /sys/class/gpio/unexport
 ```
 
 ## Limitations
