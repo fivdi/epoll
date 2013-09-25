@@ -58,15 +58,15 @@ echo both > /sys/class/gpio/gpio18/edge
 
 Then run pi-watch-button to be notified every time the button is pressed and
 released. If there is no hardware debounce circuit for the push-button, contact
-bounce is very likely to be visible on the console output.
+bounce issues are very likely to be visible on the console output.
+pi-watch-button terminates automatically after 30 seconds.
 
     $ [sudo] node pi-watch-button
 
-pi-watch-button terminates automatically after 30 seconds.
 
 pi-watch-button:
 ```js
-var Epoll = require('../build/Release/epoll').Epoll,
+var Epoll = require('epoll').Epoll,
   fs = require('fs'),
   valuefd = fs.openSync('/sys/class/gpio/gpio18/value', 'r'),
   buffer = new Buffer(1);
