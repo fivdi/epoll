@@ -1,5 +1,10 @@
-0.0.3 - Sep ?? 2013
+0.0.4 - Sep 25 2013
 ===================
+  * Fixed url in readme so that it displays correctly at npmjs.org, hopefully
+
+0.0.3 - Sep 25 2013
+===================
+  * Added content to readme
   * Added examples for the BeagleBone and RaspberryPi
   * Minor bug fixes
   * Improved tests
