@@ -1,7 +1,6 @@
 ## epoll
 
-A low-level Node.js binding for the
-[Linux epoll API](http://man7.org/linux/man-pages/man7/epoll.7.html) for monitoring multiple
+A low-level Node.js binding for the Linux epoll API for monitoring multiple
 file descriptors to see if I/O is possible on any of them.
 
 This module was initially written to detect EPOLLPRI events indicating that

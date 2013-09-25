@@ -1,3 +1,7 @@
+0.0.5 - Sep 25 2013
+===================
+  * Removed link
+
 0.0.4 - Sep 25 2013
 ===================
   * Fixed url in readme so that it displays correctly at npmjs.org, hopefully
