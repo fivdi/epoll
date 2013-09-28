@@ -5,6 +5,9 @@
  * but doesn't read stdin until the test has completed. This results in a
  * continuous stream of events while the test is running.
  *
+ * Note that the rate determined is misleading as epoll is notifying us about
+ * the same newline all the time.
+ *
  * The newline should be piped in for reasonable results:
  * echo | node performance-check
  */
