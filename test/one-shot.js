@@ -1,5 +1,7 @@
 /*
- * 
+ * Make sure a single EPOLLONESHOT event can be handled.
+ *
+ * This test expects a newline as input on stdin.
  */
 var Epoll = require("../build/Release/epoll").Epoll,
   util = require('./util'),
@@ -10,11 +12,11 @@ var Epoll = require("../build/Release/epoll").Epoll,
 epoll = new Epoll(function (err, fd, events) {
   eventCount++;
 
-  if (eventCount === 1 && events & Epoll.EPOLLIN) {
+  if (eventCount === 1) {
     setTimeout(function () {
-      util.read(fd); // read user input (the enter key)
+      util.read(fd); // read stdin (the newline)
       epoll.remove(fd).close();
-    }, 500);
+    }, 100);
   } else {
     console.log('one-shot *** Error: unexpected event');
   }

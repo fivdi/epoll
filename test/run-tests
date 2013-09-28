@@ -15,9 +15,10 @@ echo two-shot - started
 echo | node two-shot
 echo two-shot - finished
 
-echo brute-force-leak-check - started
-echo | node brute-force-leak-check
-echo brute-force-leak-check - finished
+# brute-force-leak-check takes a while to execute so its only run occasionally
+#echo brute-force-leak-check - started
+#echo | node brute-force-leak-check
+#echo brute-force-leak-check - finished
 
 echo performance-check - started
 echo | node performance-check
