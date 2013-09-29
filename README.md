@@ -40,7 +40,7 @@ Event Types
 The following example shows how epoll can be used to detect interrupts from a
 momentary push-button connected to GPIO #18 (pin P1-12) on the Raspberry Pi.
 The same example for the BeagleBone using GPIO #117 is also available in the
-[example directory](https://github.com/fivdi/epoll/tree/master/example/watch/button).
+[example directory](https://github.com/fivdi/epoll/tree/master/example/watch-button).
 
 The first step is to export GPIO #18 as an interrupt generating input using
 the pi-export bash script from the examples directory.
