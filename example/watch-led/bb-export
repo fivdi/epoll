@@ -1,0 +1,5 @@
+#!/bin/sh
+echo 38 > /sys/class/gpio/export
+echo out > /sys/class/gpio/gpio38/direction
+echo both > /sys/class/gpio/gpio38/edge
+

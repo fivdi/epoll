@@ -1,6 +1,6 @@
-var Epoll = require('../build/Release/epoll').Epoll,
+var Epoll = require('../../build/Release/epoll').Epoll,
   fs = require('fs'),
-  valuefd = fs.openSync('/sys/class/gpio/gpio117/value', 'r'),
+  valuefd = fs.openSync('/sys/class/gpio/gpio18/value', 'r'),
   buffer = new Buffer(1);
 
 var poller = new Epoll(function (err, fd, events) {

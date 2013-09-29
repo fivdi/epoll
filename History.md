@@ -1,5 +1,6 @@
 0.0.6 - ??? ?? 2013
 ===================
+  * Added an example for watching outputs
   * Improved tests
 
 0.0.5 - Sep 25 2013
