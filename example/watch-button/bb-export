@@ -1,5 +1,0 @@
-#!/bin/sh
-echo 117 > /sys/class/gpio/export
-echo in > /sys/class/gpio/gpio117/direction
-echo both > /sys/class/gpio/gpio117/edge
-

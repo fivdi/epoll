@@ -35,19 +35,25 @@ Event Types
   * Epoll.EPOLLET
   * Epoll.EPOLLONESHOT
 
+Event types can be combined with | when calling add or modify. For example,
+Epoll.EPOLLPRI | Epoll.EPOLLONESHOT could be passed to add to detect a single
+GPIO interrupt.
+
 ## Example - Watching GPIO Inputs
 
 The following example shows how epoll can be used to detect interrupts from a
 momentary push-button connected to GPIO #18 (pin P1-12) on the Raspberry Pi.
-The same example for the BeagleBone using GPIO #117 is also available in the
-[example directory](https://github.com/fivdi/epoll/tree/master/example/watch-button).
+The source code is available in the [example directory]
+(https://github.com/fivdi/epoll/tree/master/example/watch-button) and can
+easily be modified for using a different GPIO on the Pi or a different platform
+such as the BeagleBone.
 
 The first step is to export GPIO #18 as an interrupt generating input using
-the pi-export bash script from the examples directory.
+the export bash script from the examples directory.
 
-    $ [sudo] ./pi-export
+    $ [sudo] ./export
 
-pi-export:
+export:
 ```bash
 #!/bin/sh
 echo 18 > /sys/class/gpio/export
@@ -55,44 +61,135 @@ echo in > /sys/class/gpio/gpio18/direction
 echo both > /sys/class/gpio/gpio18/edge
 ```
 
-Then run pi-watch-button to be notified every time the button is pressed and
+Then run watch-button to be notified every time the button is pressed and
 released. If there is no hardware debounce circuit for the push-button, contact
 bounce issues are very likely to be visible on the console output.
-pi-watch-button terminates automatically after 30 seconds.
+watch-button terminates automatically after 30 seconds.
 
-    $ [sudo] node pi-watch-button
+    $ [sudo] node watch-button
 
-
-pi-watch-button:
+watch-button:
 ```js
 var Epoll = require('epoll').Epoll,
   fs = require('fs'),
   valuefd = fs.openSync('/sys/class/gpio/gpio18/value', 'r'),
   buffer = new Buffer(1);
 
+// Create a new Epoll. The callback is the interrupt handler.
 var poller = new Epoll(function (err, fd, events) {
+  // Read GPIO value file. Reading also clears the interrupt.
   fs.readSync(fd, buffer, 0, 1, 0);
   console.log(buffer.toString() === '1' ? 'pressed' : 'released');
 });
 
-// Read value file before polling to prevent an initial unauthentic interrupt
+// Read the GPIO value file before watching to
+// prevent an initial unauthentic interrupt.
 fs.readSync(valuefd, buffer, 0, 1, 0);
+
+// Start watching for interrupts.
 poller.add(valuefd, Epoll.EPOLLPRI);
 
+// Stop watching after 30 seconds.
 setTimeout(function () {
   poller.remove(valuefd).close();
 }, 30000);
 ```
 
-When pi-watch-button has terminated, GPIO #18 can be unexported using the
-pi-unexport bash script.
+When watch-button has terminated, GPIO #18 can be unexported using the
+unexport bash script.
 
-    $ [sudo] ./pi-unexport
+    $ [sudo] ./unexport
 
-pi-unexport:
+unexport:
 ```bash
 #!/bin/sh
 echo 18 > /sys/class/gpio/unexport
+```
+
+## Example - Watching GPIO Outputs (Yes, Outputs)
+
+The following example shows how epoll can be used to detect interrupts when the
+state of an LED connected to GPIO #38 on the BeagleBone changes state.
+The source code is available in the [example directory]
+(https://github.com/fivdi/epoll/tree/master/example/watch-led) and can
+easily be modified for using a different GPIO on the BeagleBone or a different
+platform such as the Raspberry Pi.
+
+The goal here is to determine how many interrupts can be handled per second.
+
+The first step is to export GPIO #38 as an interrupt generating output using
+the export bash script from the examples directory.
+
+    $ [sudo] ./export
+
+export:
+```bash
+#!/bin/sh
+echo 38 > /sys/class/gpio/export
+echo out > /sys/class/gpio/gpio38/direction
+echo both > /sys/class/gpio/gpio38/edge
+```
+
+Then run watch-led. watch-led toggles the state of the led every time it
+detects an interrupt. This toggling will trigger the next interrupt. After five
+seconds, watch-led prints the number of interrupts it detected per second.
+
+    $ [sudo] node watch-led
+
+watch-led:
+```js
+var Epoll = require('epoll').Epoll,
+  fs = require('fs'),
+  valuefd = fs.openSync('/sys/class/gpio/gpio38/value', 'r+'),
+  value = new Buffer(1),  // The three Buffers here are global
+  zero = new Buffer('0'), // to improve performance.
+  one = new Buffer('1'),
+  count = 0,
+  time;
+
+// Create a new Epoll. The callback is the interrupt handler.
+var poller = new Epoll(function (err, fd, events) {
+  var nextValue;
+
+  count++;
+
+  // Read GPIO value file. Reading also clears the interrupt.
+  fs.readSync(fd, value, 0, 1, 0);
+
+  // Toggle GPIO value. This will eventually result
+  // in the next interrupt being triggered.
+  nextValue = value[0] === zero[0] ? one : zero;
+  fs.writeSync(fd, nextValue, 0, nextValue.length, 0);
+});
+
+time = process.hrtime(); // Get start time.
+
+// Start watching for interrupts. This will trigger the first interrupt
+// as the value file already has data waiting for a read.
+poller.add(valuefd, Epoll.EPOLLPRI);
+
+// Print interrupt rate to console after 5 seconds.
+setTimeout(function () {
+  var rate;
+
+  time = process.hrtime(time); // Get run time.
+  rate = Math.floor(count / (time[0] + time[1] / 1E9));
+  console.log(rate + ' interrupts per second');
+
+  // Stop watching.
+  poller.remove(valuefd).close();
+}, 5000);
+```
+
+When watch-led has terminated, GPIO #38 can be unexported using the
+unexport bash script.
+
+    $ [sudo] ./unexport
+
+unexport:
+```bash
+#!/bin/sh
+echo 38 > /sys/class/gpio/unexport
 ```
 
 ## Limitations
