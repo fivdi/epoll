@@ -39,7 +39,7 @@ Event types can be combined with | when calling add or modify. For example,
 Epoll.EPOLLPRI | Epoll.EPOLLONESHOT could be passed to add to detect a single
 GPIO interrupt.
 
-## Example - Watching GPIO Inputs
+## Example - Watching Buttons
 
 The following example shows how epoll can be used to detect interrupts from a
 momentary push-button connected to GPIO #18 (pin P1-12) on the Raspberry Pi.
@@ -106,10 +106,10 @@ unexport:
 echo 18 > /sys/class/gpio/unexport
 ```
 
-## Example - Watching GPIO Outputs (Yes, Outputs)
+## Example - Interrupts per Second
 
 The following example shows how epoll can be used to detect interrupts when the
-state of an LED connected to GPIO #38 on the BeagleBone changes state.
+state of an LED connected to GPIO #38 on the BeagleBone changes.
 The source code is available in the [example directory]
 (https://github.com/fivdi/epoll/tree/master/example/watch-led) and can
 easily be modified for using a different GPIO on the BeagleBone or a different
@@ -191,6 +191,12 @@ unexport:
 #!/bin/sh
 echo 38 > /sys/class/gpio/unexport
 ```
+
+Here are some results for the "Interrupts per Second" example
+
+Platform | OS | Node.js | Interrupts per second
+--- | --- | ---
+BeagleBone | Ångström v2012.12 - Kernel 3.8.13 | v0.8.22 | 6098
 
 ## Limitations
 
