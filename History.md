@@ -1,4 +1,4 @@
-0.0.6 - ??? ?? 2013
+0.0.6 - Oct 01 2013
 ===================
   * Added an example for watching outputs
   * Improved tests
