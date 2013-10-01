@@ -197,6 +197,8 @@ Here are some results from the "Interrupts per Second" example
 Platform | OS | Node.js | Interrupts per second
 --- | --- | --- | ---:
 BeagleBone | Ångström v2012.12 - Kernel 3.8.13 | v0.8.22 | 6098
+Raspberry Pi | Raspbian - Kernel 3.2.27+ | v0.8.14 | 3591
+Raspberry Pi | Raspbian - Kernel 3.2.27+ | v0.10.16 | 3530
 
 ## Limitations
 
