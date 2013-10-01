@@ -195,7 +195,7 @@ echo 38 > /sys/class/gpio/unexport
 Here are some results from the "Interrupts per Second" example
 
 Platform | OS | Node.js | Interrupts per second
---- | --- | --- |:---:
+--- | --- | --- | ---:
 BeagleBone | Ångström v2012.12 - Kernel 3.8.13 | v0.8.22 | 6098
 
 ## Limitations
