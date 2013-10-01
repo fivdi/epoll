@@ -117,7 +117,7 @@ platform such as the Raspberry Pi.
 
 The goal here is to determine how many interrupts can be handled per second.
 
-The first step is to export GPIO #38 as an interrupt generating output using
+The first step is to export GPIO #38 as an interrupt generating output (!) using
 the export bash script from the examples directory.
 
     $ [sudo] ./export
