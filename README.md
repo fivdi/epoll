@@ -194,18 +194,18 @@ echo 38 > /sys/class/gpio/unexport
 
 Here are some results from the "Interrupts per Second" example using epoll v0.0.6.
 
-BeagleBone 720MHz
+BeagleBone, 720MHz, Ångström v2012.12, Kernel 3.8.13:
 
-OS | Node.js | Interrupts per second
---- | ---: | ---:
-Ångström v2012.12 - Kernel 3.8.13 | v0.11.7 | 7152
-Ångström v2012.12 - Kernel 3.8.13 | v0.8.22 | 6098
+Node.js | Interrupts / Second
+:---: | ---:
+v0.11.7 | 7152
+v0.8.22 | 6098
 
-Raspberry Pi 700Mhz
+Raspberry Pi, 700Mhz, Raspbian, Kernel 3.2.27+:
 
-OS | Node.js | Interrupts per second
---- | ---: | ---:
-Raspbian - Kernel 3.2.27+ | v0.11.07 | 4071
-Raspbian - Kernel 3.2.27+ | v0.10.16 | 3530
-Raspbian - Kernel 3.2.27+ | v0.8.14 | 3591
+Node.js | Interrupts / Second
+:---: | ---:
+v0.11.07 | 4071
+v0.10.16 | 3530
+v0.8.14 | 3591
 
