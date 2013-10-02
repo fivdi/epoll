@@ -39,7 +39,11 @@ static int watcher_errno_g;
 
 static void *watcher(void *arg) {
   while (true) {
-    // Wait till the event loop says it's ok to poll.
+    // Wait till the event loop says it's ok to poll. The semaphore serves two
+    // purposes. Firstly, synchronizing access to watcher_event_g and
+    // watcher_errno_g. Secondly, with edge-triggered epoll (the default, when
+    // EPOLLET is not specified,) the last event triggered may be triggered
+    // again if the condition that triggered it isn't cleared.
     uv_sem_wait(&watcher_sem_g);
 
     int count = epoll_wait(watcher_epfd_g, &watcher_event_g, 1, -1);
