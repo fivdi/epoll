@@ -130,9 +130,11 @@ echo out > /sys/class/gpio/gpio38/direction
 echo both > /sys/class/gpio/gpio38/edge
 ```
 
-Then run watch-led. watch-led toggles the state of the led every time it
-detects an interrupt. This toggling will trigger the next interrupt. After five
-seconds, watch-led prints the number of interrupts it detected per second.
+Then run watch-led. watch-led toggles the state of the LED every time it
+detects an interrupt. Each toggle will trigger the next interrupt. After five
+seconds, watch-led prints the number of interrupts it detected per second. The
+LED is turned on and off several thousand times per second so no blinking will
+be visible, the LED will light at about half brightness.
 
     $ [sudo] node watch-led
 
@@ -199,6 +201,7 @@ BeagleBone, 720MHz, Ångström v2012.12, Kernel 3.8.13:
 Node.js | Interrupts / Second
 :---: | ---:
 v0.11.7 | 7152
+v0.10.20 | 5861
 v0.8.22 | 6098
 
 Raspberry Pi, 700Mhz, Raspbian, Kernel 3.2.27+:
