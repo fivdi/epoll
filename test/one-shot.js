@@ -18,7 +18,7 @@ epoll = new Epoll(function (err, fd, events) {
       epoll.remove(fd).close();
     }, 100);
   } else {
-    console.log('one-shot *** Error: unexpected event');
+    console.log('*** Error: unexpected event');
   }
 });
 

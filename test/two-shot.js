@@ -22,7 +22,7 @@ epoll = new Epoll(function (err, fd, events) {
       epoll.remove(fd).close();
     }, 100);
   } else {
-    console.log('two-shot *** Error: unexpected event');
+    console.log('*** Error: unexpected event');
   }
 });
 

@@ -19,7 +19,7 @@ function once() {
     count++;
 
     if (count % 1e5 === 0) {
-      console.log(count + ' instances created and events detected ');
+      console.log('           ' + count + ' instances created and events detected ');
     }
     if (count < 1e6) {
       once();

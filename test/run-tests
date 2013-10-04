@@ -1,26 +1,30 @@
 #!/bin/sh
-echo do-nothing - started
+echo 'started  - do-nothing'
 node do-nothing
-echo do-nothing - finished
+echo 'finished - do-nothing'
 
-echo do-almost-nothing - started
+echo 'started  - do-almost-nothing'
 node do-almost-nothing
-echo do-almost-nothing - finished
+echo 'finished - do-almost-nothing'
 
-echo one-shot - started
+echo 'started  - verify-events'
+node verify-events
+echo 'finished - verify-events'
+
+echo 'started  - one-shot'
 echo | node one-shot
-echo one-shot - finished
+echo 'finished - one-shot'
 
-echo two-shot - started
+echo 'started  - two-shot'
 echo | node two-shot
-echo two-shot - finished
+echo 'finished - two-shot'
 
 # brute-force-leak-check takes a while to execute so its only run occasionally
-#echo brute-force-leak-check - started
+#echo 'started  - brute-force-leak-check'
 #echo | node brute-force-leak-check
-#echo brute-force-leak-check - finished
+#echo 'finished - brute-force-leak-check'
 
-echo performance-check - started
+echo 'started  - performance-check'
 echo | node performance-check
-echo performance-check - finished
+echo 'finished - performance-check'
 

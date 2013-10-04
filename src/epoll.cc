@@ -175,11 +175,13 @@ NAN_METHOD(Epoll::Add) {
   if (epoll->closed_)
     return NanThrowError("add can't be called after calling close");
 
-  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsUint32())
+  // Epoll.EPOLLET is -0x8000000 on ARM and an IsUint32 check fails so
+  // check for IsNumber instead.
+  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsNumber())
     return NanThrowError("incorrect arguments passed to add"
-      "(int fd, uint32_t events)");
+      "(int fd, int events)");
 
-  int err = epoll->Add(args[0]->Int32Value(), args[1]->Uint32Value());
+  int err = epoll->Add(args[0]->Int32Value(), args[1]->Int32Value());
   if (err != 0)
     return NanThrowError(strerror(err), err);
 
@@ -195,11 +197,13 @@ NAN_METHOD(Epoll::Modify) {
   if (epoll->closed_)
     return NanThrowError("modify can't be called after calling close");
 
-  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsUint32())
-    return NanThrowError("incorrect arguments passed to maodify"
-      "(int fd, uint32_t events)");
+  // Epoll.EPOLLET is -0x8000000 on ARM and an IsUint32 check fails so
+  // check for IsNumber instead.
+  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsNumber())
+    return NanThrowError("incorrect arguments passed to modify"
+      "(int fd, int events)");
 
-  int err = epoll->Modify(args[0]->Int32Value(), args[1]->Uint32Value());
+  int err = epoll->Modify(args[0]->Int32Value(), args[1]->Int32Value());
   if (err != 0)
     return NanThrowError(strerror(err), err);
 

@@ -26,7 +26,7 @@ setTimeout(function () {
 
   time = process.hrtime(time);
   rate = Math.floor(count / (time[0] + time[1] / 1E9));
-  console.log(rate + ' events per second');
+  console.log('           ' + rate + ' events per second');
 
   epoll.remove(stdin).close();
   util.read(stdin); // read stdin (the newline)
