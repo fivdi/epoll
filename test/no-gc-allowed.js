@@ -10,6 +10,7 @@
  */
 var Epoll = require('../build/Release/epoll').Epoll;
 var time = process.hrtime();
+var stdin = 0; // fd for stdin 
 var poller = new Epoll(function () {
   var timeSoFar = process.hrtime(time);
   if (timeSoFar[0] > 5) {
@@ -22,5 +23,5 @@ var poller = new Epoll(function () {
   }
 });
 
-poller.add(0, Epoll.EPOLLIN);
+poller.add(stdin, Epoll.EPOLLIN);
 

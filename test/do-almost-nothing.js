@@ -5,7 +5,7 @@
  * loop alive unnecessarily long. If the process terminates, everything is ok.
  * If it hangs, there is a problem.
  */
-var Epoll = require("../build/Release/epoll").Epoll,
+var Epoll = require('../build/Release/epoll').Epoll,
   epoll = new Epoll(function(){})
   stdin = 0; // fd for stdin
 

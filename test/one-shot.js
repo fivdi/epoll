@@ -3,7 +3,7 @@
  *
  * This test expects a newline as input on stdin.
  */
-var Epoll = require("../build/Release/epoll").Epoll,
+var Epoll = require('../build/Release/epoll').Epoll,
   util = require('./util'),
   eventCount = 0,
   epoll,

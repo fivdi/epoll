@@ -11,7 +11,7 @@
  * The newline should be piped in for reasonable results:
  * echo | node performance-check
  */
-var Epoll = require("../build/Release/epoll").Epoll,
+var Epoll = require('../build/Release/epoll').Epoll,
   util = require('./util'),
   time,
   count = 0,

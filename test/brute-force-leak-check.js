@@ -7,7 +7,7 @@
  * but doesn't read stdin until it has been notified about the availability of
  * input data 1000000 times.
  */
-var Epoll = require("../build/Release/epoll").Epoll,
+var Epoll = require('../build/Release/epoll').Epoll,
   util = require('./util'),
   count = 0,
   stdin = 0; // fd for stdin
