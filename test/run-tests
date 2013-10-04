@@ -28,3 +28,7 @@ echo 'started  - performance-check'
 echo | node performance-check
 echo 'finished - performance-check'
 
+echo 'started  - no-gc-allowed'
+echo | node no-gc-allowed
+echo 'finished - no-gc-allowed'
+

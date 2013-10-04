@@ -260,6 +260,9 @@ int Epoll::Add(int fd, uint32_t events) {
   // Keep event loop alive. uv_unref called in Remove.
   uv_ref((uv_handle_t *) &watcher_async_g);
 
+  // Prevent GC for this instance. Unref called in Remove.
+  Ref();
+
   return 0;
 }
 
@@ -285,6 +288,7 @@ int Epoll::Remove(int fd) {
 
   if (fd2epoll.empty())
     uv_unref((uv_handle_t *) &watcher_async_g);
+  Unref();
 
   return 0;
 }
