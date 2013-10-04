@@ -1,3 +1,6 @@
+0.0.7 - 
+===================
+
 0.0.6 - Oct 01 2013
 ===================
   * Added an example for watching outputs
