@@ -1,7 +1,8 @@
 0.0.7 - 
 ===================
-  * add and modify now accept Epoll.EPOLLET as an event (#2)
+  * added closed property (#1)
   * fixed segfault issue (#5)
+  * add and modify now accept Epoll.EPOLLET as an event (#2)
 
 0.0.6 - Oct 01 2013
 ===================
