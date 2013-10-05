@@ -138,6 +138,9 @@ void Epoll::Init(Handle<Object> exports) {
   NODE_SET_PROTOTYPE_METHOD(ctor, "remove", Remove);
   NODE_SET_PROTOTYPE_METHOD(ctor, "close", Close);
 
+  Local<ObjectTemplate> proto = ctor->PrototypeTemplate();
+  proto->SetAccessor(NanSymbol("closed"), GetClosed);
+
   NODE_DEFINE_CONSTANT(ctor, EPOLLIN);
   NODE_DEFINE_CONSTANT(ctor, EPOLLOUT);
   NODE_DEFINE_CONSTANT(ctor, EPOLLRDHUP);
@@ -243,6 +246,15 @@ NAN_METHOD(Epoll::Close) {
     return NanThrowError(strerror(err), err);
 
   NanReturnNull();
+}
+
+
+NAN_GETTER(Epoll::GetClosed) {
+  NanScope();
+
+  Epoll *epoll = ObjectWrap::Unwrap<Epoll>(args.This());
+
+  NanReturnValue(Boolean::New(epoll->closed_));
 }
 
 

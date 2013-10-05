@@ -15,6 +15,7 @@ class Epoll : public node::ObjectWrap {
     static NAN_METHOD(Modify);
     static NAN_METHOD(Remove);
     static NAN_METHOD(Close);
+    static NAN_GETTER(GetClosed);
 
     int Add(int fd, uint32_t events);
     int Modify(int fd, uint32_t events);
