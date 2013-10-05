@@ -1,4 +1,4 @@
-0.0.7 - 
+0.0.7 - Oct 05 2013
 ===================
   * added closed property (#1)
   * fixed segfault issue (#5)
