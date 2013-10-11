@@ -38,15 +38,25 @@ static struct epoll_event watcher_event_g;
 static int watcher_errno_g;
 
 static void *watcher(void *arg) {
+  int count;
+
   while (true) {
-    // Wait till the event loop says it's ok to poll. The semaphore serves two
-    // purposes. Firstly, synchronizing access to watcher_event_g and
-    // watcher_errno_g. Secondly, with edge-triggered epoll (the default, when
-    // EPOLLET is not specified,) the last event triggered may be triggered
-    // again if the condition that triggered it isn't cleared.
+    // Wait till the event loop says it's ok to poll. The semaphore serves more
+    // than one purpose.
+    // - It synchronizing access to '1 element queue' in variables
+    //   watcher_event_g and watcher_errno_g.
+    // - When level-triggered epoll is used, the default when EPOLLET isn't
+    //   specified, the event triggered by the last call to epoll_wait may be
+    //   trigged again and again if the condition that triggered it hasn't been
+    //   cleared yet.
+    // - It forces a context switch from watcher thread to the event loop
+    //   thread.
     uv_sem_wait(&watcher_sem_g);
 
-    int count = epoll_wait(watcher_epfd_g, &watcher_event_g, 1, -1);
+    do {
+      count = epoll_wait(watcher_epfd_g, &watcher_event_g, 1, -1);
+    } while (count == -1 && errno == EINTR);
+
     watcher_errno_g = count == -1 ? errno : 0;
 
     // Errors returned from uv_async_send are silently ignored.

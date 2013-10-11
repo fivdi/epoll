@@ -32,7 +32,6 @@ setTimeout(function () {
   util.read(stdin); // read stdin (the newline)
 }, 100);
 
-
 epoll.add(stdin, Epoll.EPOLLIN);
 time = process.hrtime();
 
