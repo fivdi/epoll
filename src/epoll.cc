@@ -1,42 +1,36 @@
 #ifdef __linux__
 
-#include <errno.h> // errno
+#include <errno.h>
 #include <pthread.h>
-#include <stdio.h> // TODO - Remove
-#include <string.h> // strerror
+#include <string.h>
 #include <sys/epoll.h>
 #include <unistd.h>
 #include <map>
 #include <list>
-
 #include <uv.h>
 #include <v8.h>
 #include <node.h>
 #include <node_object_wrap.h>
-
 #include <nan.h>
-
 #include "epoll.h"
 
 using namespace v8;
 
 // TODO - strerror isn't threadsafe, use strerror_r instead
-// TODO - use uv_strerror rather than strerror_t for libuv errors
-// TODO - Tidy up thread stuff and global vars
+// TODO - use uv_strerror rather than strerror_r for libuv errors?
+
+static int epfd_g;
+
+static uv_sem_t sem_g;
+static uv_async_t async_g;
+
+static struct epoll_event event_g;
+static int errno_g;
+
 
 /*
  * Watcher thread
  */
-
-// TODO - The variable names here look terrible
-static int watcher_epfd_g;
-
-static uv_sem_t watcher_sem_g;
-static uv_async_t watcher_async_g;
-
-static struct epoll_event watcher_event_g;
-static int watcher_errno_g;
-
 static void *watcher(void *arg) {
   int count;
 
@@ -44,68 +38,67 @@ static void *watcher(void *arg) {
     // Wait till the event loop says it's ok to poll. The semaphore serves more
     // than one purpose.
     // - It synchronizing access to '1 element queue' in variables
-    //   watcher_event_g and watcher_errno_g.
+    //   event_g and errno_g.
     // - When level-triggered epoll is used, the default when EPOLLET isn't
     //   specified, the event triggered by the last call to epoll_wait may be
     //   trigged again and again if the condition that triggered it hasn't been
     //   cleared yet.
-    // - It forces a context switch from watcher thread to the event loop
+    // - It forces a context switch from the watcher thread to the event loop
     //   thread.
-    uv_sem_wait(&watcher_sem_g);
+    uv_sem_wait(&sem_g);
 
     do {
-      count = epoll_wait(watcher_epfd_g, &watcher_event_g, 1, -1);
+      count = epoll_wait(epfd_g, &event_g, 1, -1);
     } while (count == -1 && errno == EINTR);
 
-    watcher_errno_g = count == -1 ? errno : 0;
+    errno_g = count == -1 ? errno : 0;
 
     // Errors returned from uv_async_send are silently ignored.
-    uv_async_send(&watcher_async_g);
+    uv_async_send(&async_g);
   }
 
   return 0;
 }
 
-// TODO - start_watcher looks terrible.
-static void start_watcher() {
+
+static int start_watcher() {
+  static bool watcher_started = false;
   pthread_t theread_id;
 
-  // TODO - Create a method callable from JS for starting the thread so that
-  // it's possible to pass arguments to epoll_create1 and pass errors back to
-  // JS.
-  watcher_epfd_g = epoll_create1(0);
-  if (watcher_epfd_g == -1) {
-    printf("%s\n", strerror(errno));
-    return;
-  }
+  if (watcher_started)
+    return 0;
 
-  int err = uv_sem_init(&watcher_sem_g, 1);
+  epfd_g = epoll_create1(0);
+  if (epfd_g == -1)
+    return errno;
+
+  int err = uv_sem_init(&sem_g, 1);
   if (err < 0) {
-    close(watcher_epfd_g);
-    printf("%s\n", strerror(-err));
-    return;
+    close(epfd_g);
+    return -err;
   }
 
-  err = uv_async_init(uv_default_loop(), &watcher_async_g,
-    Epoll::DispatchEvent);
+  err = uv_async_init(uv_default_loop(), &async_g, Epoll::DispatchEvent);
   if (err < 0) {
-    close(watcher_epfd_g);
-    uv_sem_destroy(&watcher_sem_g);
-    printf("%s\n", strerror(-err));
-    return;
+    close(epfd_g);
+    uv_sem_destroy(&sem_g);
+    return -err;
   }
 
-  // Prevent watcher_async_g from keeping event loop alive, for the time being.
-  uv_unref((uv_handle_t *) &watcher_async_g);
+  // Prevent async_g from keeping event loop alive, for the time being.
+  uv_unref((uv_handle_t *) &async_g);
 
   err = pthread_create(&theread_id, 0, watcher, 0);
   if (err != 0) {
-    close(watcher_epfd_g);
-    uv_sem_destroy(&watcher_sem_g);
-    uv_close((uv_handle_t *) &watcher_async_g, 0);
-    printf("%s\n", strerror(err));
-    return;
+    close(epfd_g);
+    uv_sem_destroy(&sem_g);
+    uv_close((uv_handle_t *) &async_g, 0);
+    return err;
   }
+
+  watcher_started = true;
+
+  return 0;
 }
 
 
@@ -154,7 +147,7 @@ void Epoll::Init(Handle<Object> exports) {
   NODE_DEFINE_CONSTANT(ctor, EPOLLIN);
   NODE_DEFINE_CONSTANT(ctor, EPOLLOUT);
   NODE_DEFINE_CONSTANT(ctor, EPOLLRDHUP);
-  NODE_DEFINE_CONSTANT(ctor, EPOLLPRI); // The reason this addon exists!
+  NODE_DEFINE_CONSTANT(ctor, EPOLLPRI); // The reason this addon was created!
   NODE_DEFINE_CONSTANT(ctor, EPOLLERR);
   NODE_DEFINE_CONSTANT(ctor, EPOLLHUP);
   NODE_DEFINE_CONSTANT(ctor, EPOLLET);
@@ -167,7 +160,6 @@ void Epoll::Init(Handle<Object> exports) {
 NAN_METHOD(Epoll::New) {
   NanScope();
 
-  // TODO - Can throw be avoided here? Maybe with a default empty handler?
   if (args.Length() < 1 || !args[0]->IsFunction())
     return NanThrowError("First argument to construtor must be a callback");
 
@@ -273,14 +265,14 @@ int Epoll::Add(int fd, uint32_t events) {
   event.events = events;
   event.data.fd = fd;
 
-  if (epoll_ctl(watcher_epfd_g, EPOLL_CTL_ADD, fd, &event) == -1)
+  if (epoll_ctl(epfd_g, EPOLL_CTL_ADD, fd, &event) == -1)
     return errno;
 
   fd2epoll.insert(std::pair<int, Epoll*>(fd, this));
   fds_.push_back(fd);
 
   // Keep event loop alive. uv_unref called in Remove.
-  uv_ref((uv_handle_t *) &watcher_async_g);
+  uv_ref((uv_handle_t *) &async_g);
 
   // Prevent GC for this instance. Unref called in Remove.
   Ref();
@@ -294,7 +286,7 @@ int Epoll::Modify(int fd, uint32_t events) {
   event.events = events;
   event.data.fd = fd;
 
-  if (epoll_ctl(watcher_epfd_g, EPOLL_CTL_MOD, fd, &event) == -1)
+  if (epoll_ctl(epfd_g, EPOLL_CTL_MOD, fd, &event) == -1)
     return errno;
 
   return 0;
@@ -302,14 +294,14 @@ int Epoll::Modify(int fd, uint32_t events) {
 
 
 int Epoll::Remove(int fd) {
-  if (epoll_ctl(watcher_epfd_g, EPOLL_CTL_DEL, fd, 0) == -1)
+  if (epoll_ctl(epfd_g, EPOLL_CTL_DEL, fd, 0) == -1)
     return errno;
 
   fd2epoll.erase(fd);
   fds_.remove(fd);
 
   if (fd2epoll.empty())
-    uv_unref((uv_handle_t *) &watcher_async_g);
+    uv_unref((uv_handle_t *) &async_g);
   Unref();
 
   return 0;
@@ -326,7 +318,7 @@ int Epoll::Close() {
   for (; it != fds_.end(); it = fds_.begin()) {
     int err = Remove(*it);
     if (err != 0)
-      return err; // TODO - Returning here leaves things messed up.
+      return err; // TODO - Returning here may leave things messed up.
   }
 
   return 0;
@@ -339,12 +331,12 @@ void Epoll::DispatchEvent(uv_async_t* handle, int status) {
   // registered interest in the event may no longer have this interest. If
   // this is the case, the event will be silently ignored.
 
-  std::map<int, Epoll*>::iterator it = fd2epoll.find(watcher_event_g.data.fd);
+  std::map<int, Epoll*>::iterator it = fd2epoll.find(event_g.data.fd);
   if (it != fd2epoll.end()) {
-    it->second->DispatchEvent(watcher_errno_g, &watcher_event_g);
+    it->second->DispatchEvent(errno_g, &event_g);
   }
 
-  uv_sem_post(&watcher_sem_g);
+  uv_sem_post(&sem_g);
 }
 
 
@@ -371,9 +363,10 @@ extern "C" void Init(Handle<Object> exports) {
   NanScope();
 
   Epoll::Init(exports);
-
-  // TODO - Allow JavaScript to start the thread
-  start_watcher();
+  
+  // TODO - Is it a good idea to throw an exception here?
+  if (int err = start_watcher())
+    NanThrowError(strerror(err), err);
 }
 
 NODE_MODULE(epoll, Init)
