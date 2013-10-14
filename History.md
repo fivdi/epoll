@@ -1,4 +1,4 @@
-0.0.8 - ??? ?? ????
+0.0.8 - Oct 14 2013
 ===================
   * Epoll thread code improved (#4)
   * EINTR handling (#3)
