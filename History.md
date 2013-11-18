@@ -1,3 +1,7 @@
+0.1.1 - Nov 19 2013
+===================
+  * A hopefully successfull attempt to fix an npm install issue
+
 0.1.0 - Nov 18 2013
 ===================
   * Updated dependencies: nan 0.4.1 -> 0.5.2
