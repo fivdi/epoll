@@ -14,8 +14,6 @@
 #include <nan.h>
 #include "epoll.h"
 
-using namespace v8;
-
 // TODO - strerror isn't threadsafe, use strerror_r instead
 // TODO - use uv_strerror rather than strerror_r for libuv errors?
 
@@ -105,7 +103,7 @@ static int start_watcher() {
 /*
  * Epoll
  */
-Persistent<FunctionTemplate> Epoll::constructor;
+v8::Persistent<v8::FunctionTemplate> Epoll::constructor;
 std::map<int, Epoll*> Epoll::fd2epoll;
 
 
@@ -126,12 +124,12 @@ Epoll::~Epoll() {
 };
 
 
-void Epoll::Init(Handle<Object> exports) {
+void Epoll::Init(v8::Handle<v8::Object> exports) {
   NanScope();
 
   // Constructor
-  Local<FunctionTemplate> ctor = FunctionTemplate::New(Epoll::New);
-  NanAssignPersistent(FunctionTemplate, constructor, ctor);
+  v8::Local<v8::FunctionTemplate> ctor = v8::FunctionTemplate::New(Epoll::New);
+  NanAssignPersistent(v8::FunctionTemplate, constructor, ctor);
   ctor->SetClassName(NanSymbol("Epoll"));
   ctor->InstanceTemplate()->SetInternalFieldCount(1);
 
@@ -141,7 +139,7 @@ void Epoll::Init(Handle<Object> exports) {
   NODE_SET_PROTOTYPE_METHOD(ctor, "remove", Remove);
   NODE_SET_PROTOTYPE_METHOD(ctor, "close", Close);
 
-  Local<ObjectTemplate> proto = ctor->PrototypeTemplate();
+  v8::Local<v8::ObjectTemplate> proto = ctor->PrototypeTemplate();
   proto->SetAccessor(NanSymbol("closed"), GetClosed);
 
   NODE_DEFINE_CONSTANT(ctor, EPOLLIN);
@@ -163,7 +161,7 @@ NAN_METHOD(Epoll::New) {
   if (args.Length() < 1 || !args[0]->IsFunction())
     return NanThrowError("First argument to construtor must be a callback");
 
-  NanCallback *callback = new NanCallback(Local<Function>::Cast(args[0]));
+  NanCallback *callback = new NanCallback(v8::Local<v8::Function>::Cast(args[0]));
 
   Epoll *epoll = new Epoll(callback);
   epoll->Wrap(args.This());
@@ -256,7 +254,7 @@ NAN_GETTER(Epoll::GetClosed) {
 
   Epoll *epoll = ObjectWrap::Unwrap<Epoll>(args.This());
 
-  NanReturnValue(Boolean::New(epoll->closed_));
+  NanReturnValue(v8::Boolean::New(epoll->closed_));
 }
 
 
@@ -344,22 +342,22 @@ void Epoll::DispatchEvent(int err, struct epoll_event *event) {
   NanScope();
 
   if (err) {
-    Local<Value> args[1] = {
-      Exception::Error(String::New(strerror(err)))
+    v8::Local<v8::Value> args[1] = {
+      v8::Exception::Error(v8::String::New(strerror(err)))
     };
     callback_->Call(1, args);
   } else {
-    Local<Value> args[3] = {
-      Local<Value>::New(Null()),
-      Integer::New(event->data.fd),
-      Integer::New(event->events)
+    v8::Local<v8::Value> args[3] = {
+      v8::Local<v8::Value>::New(v8::Null()),
+      v8::Integer::New(event->data.fd),
+      v8::Integer::New(event->events)
     };
     callback_->Call(3, args);
   }
 }
 
 
-extern "C" void Init(Handle<Object> exports) {
+extern "C" void Init(v8::Handle<v8::Object> exports) {
   NanScope();
 
   Epoll::Init(exports);
