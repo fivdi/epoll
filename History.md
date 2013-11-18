@@ -1,4 +1,6 @@
+0.1.0 - Nov 18 2013
 ===================
+  * Updated dependencies: nan 0.4.1 -> 0.5.2
   * removed using namespace v8 (bad practice)
 
 0.0.8 - Oct 14 2013

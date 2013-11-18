@@ -2,7 +2,7 @@
   "targets": [{
     "target_name": "epoll",
     "include_dirs" : [
-      "<!(node -p -e \"require('path').relative('.', require('path').dirname(require.resolve('nan')))\")"
+      "<!(node -e \"require('nan')\")"
     ],
     "sources": [
       "./src/epoll.cc"
