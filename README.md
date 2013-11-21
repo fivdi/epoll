@@ -22,7 +22,7 @@ to detect such interrupts.
   * remove(fd) - Deregister file descriptor fd.
   * modify(fd, events) - Change the event types associated with file descriptor
     fd to those specified by events.
-  * close(fd) - Deregisters all file descriptors and free resources.
+  * close() - Deregisters all file descriptors and free resources.
 
 Event Types
 
