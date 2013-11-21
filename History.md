@@ -1,4 +1,4 @@
-0.1.2
+0.1.2 - Nov 21 2013
 ===================
   * 0.11.9+ compatibility [#6](https://github.com/fivdi/epoll/issues/6)
   * Updated dependencies: nan 0.5.2 -> 0.6.0
