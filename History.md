@@ -1,3 +1,8 @@
+0.1.2
+===================
+  * 0.11.9+ compatibility [#6](https://github.com/fivdi/epoll/issues/6)
+  * Updated dependencies: nan 0.5.2 -> 0.6.0
+
 0.1.1 - Nov 19 2013
 ===================
   * A hopefully successfull attempt to fix an npm install issue

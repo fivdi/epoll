@@ -40,7 +40,7 @@ static void *watcher(void *arg) {
     // - When level-triggered epoll is used, the default when EPOLLET isn't
     //   specified, the event triggered by the last call to epoll_wait may be
     //   trigged again and again if the condition that triggered it hasn't been
-    //   cleared yet.
+    //   cleared yet. Waiting prevents multiple triggers for the same event.
     // - It forces a context switch from the watcher thread to the event loop
     //   thread.
     uv_sem_wait(&sem_g);
@@ -348,7 +348,7 @@ void Epoll::DispatchEvent(int err, struct epoll_event *event) {
     callback_->Call(1, args);
   } else {
     v8::Local<v8::Value> args[3] = {
-      v8::Local<v8::Value>::New(v8::Null()),
+      NanNewLocal<v8::Value>(v8::Null()),
       v8::Integer::New(event->data.fd),
       v8::Integer::New(event->events)
     };
