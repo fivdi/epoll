@@ -11,6 +11,7 @@
 #include <v8.h>
 #include <node.h>
 #include <node_object_wrap.h>
+#include <node_version.h>
 #include <nan.h>
 #include "epoll.h"
 
@@ -72,12 +73,26 @@ static int start_watcher() {
 
   int err = uv_sem_init(&sem_g, 1);
   if (err < 0) {
+    // node v0.11.5 uses uv v0.11.7. The uv v0.11.7 version of uv_sem_init
+    // returns -errno on error. uv_sem_init in lower versions of node returns
+    // -1 on error. So, if the node version is less than v0.11.5, set err to
+    // -errno.
+#if ! NODE_VERSION_AT_LEAST(0, 11, 5)
+    err = -errno;
+#endif
     close(epfd_g);
     return -err;
   }
 
   err = uv_async_init(uv_default_loop(), &async_g, Epoll::DispatchEvent);
   if (err < 0) {
+    // node v0.11.5 uses uv v0.11.7. The uv v0.11.7 version of uv_async_init
+    // returns -errno on error. uv_async_init in lower versions of node returns
+    // -1 on error. So, if the node version is less than v0.11.5, set err to
+    // -errno.
+#if ! NODE_VERSION_AT_LEAST(0, 11, 5)
+    err = -errno;
+#endif
     close(epfd_g);
     uv_sem_destroy(&sem_g);
     return -err;
