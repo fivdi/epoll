@@ -13,6 +13,19 @@ to detect such interrupts.
 
     $ [sudo] npm install epoll
 
+**BeagleBone Prerequisites**
+
+Before installing epoll on stock Ångström on the BeagleBone three Python
+modules need to be installed; python-compiler, python-misc, and
+python-multiprocessing. They can be installed with the following commands:
+
+```bash
+$ opkg update
+$ opkg install python-compiler
+$ opkg install python-misc
+$ opkg install python-multiprocessing
+```
+
 ## API
 
   * Epoll(callback) - Constructor. The callback is called when epoll events
