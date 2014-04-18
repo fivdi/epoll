@@ -1,3 +1,8 @@
+0.1.4 - Apr 18 2014
+===================
+  * Documented BeagleBone Ångström prerequisites
+  * Use bindings for laoding
+
 0.1.3 - Mar 23 2014
 ===================
   * 0.11.5+ compatibility [#7](https://github.com/fivdi/epoll/issues/7)

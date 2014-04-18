@@ -1,2 +1,2 @@
-module.exports = require('./build/Release/epoll');
+module.exports = require('bindings')('epoll.node');
 
