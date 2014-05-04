@@ -1,3 +1,7 @@
+0.1.5 - May 04 2014
+===================
+  * nan 1.0.0 alignment [#8](https://github.com/fivdi/epoll/issues/8)
+
 0.1.4 - Apr 18 2014
 ===================
   * Documented BeagleBone Ångström prerequisites

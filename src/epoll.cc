@@ -84,7 +84,7 @@ static int start_watcher() {
     return -err;
   }
 
-  err = uv_async_init(uv_default_loop(), &async_g, Epoll::DispatchEvent);
+  err = uv_async_init(uv_default_loop(), &async_g, Epoll::HandleEvent);
   if (err < 0) {
     // node v0.11.5 uses uv v0.11.7. The uv v0.11.7 version of uv_async_init
     // returns -errno on error. uv_async_init in lower versions of node returns
@@ -134,7 +134,6 @@ Epoll::~Epoll() {
   // uv_unref, which, in general, must be called to terminate a process
   // gracefully!
   NanScope();
-
   if (callback_) delete callback_;
 };
 
@@ -143,8 +142,8 @@ void Epoll::Init(v8::Handle<v8::Object> exports) {
   NanScope();
 
   // Constructor
-  v8::Local<v8::FunctionTemplate> ctor = v8::FunctionTemplate::New(Epoll::New);
-  NanAssignPersistent(v8::FunctionTemplate, constructor, ctor);
+  v8::Local<v8::FunctionTemplate> ctor = NanNew<v8::FunctionTemplate>(Epoll::New);
+  NanAssignPersistent(constructor, ctor);
   ctor->SetClassName(NanSymbol("Epoll"));
   ctor->InstanceTemplate()->SetInternalFieldCount(1);
 
@@ -269,7 +268,7 @@ NAN_GETTER(Epoll::GetClosed) {
 
   Epoll *epoll = ObjectWrap::Unwrap<Epoll>(args.This());
 
-  NanReturnValue(v8::Boolean::New(epoll->closed_));
+  NanReturnValue(NanNew<v8::Boolean>(epoll->closed_));
 }
 
 
@@ -338,7 +337,11 @@ int Epoll::Close() {
 }
 
 
-void Epoll::DispatchEvent(uv_async_t* handle, int status) {
+#if NODE_VERSION_AT_LEAST(0, 11, 13)
+void Epoll::HandleEvent(uv_async_t* handle) {
+#else
+void Epoll::HandleEvent(uv_async_t* handle, int status) {
+#endif
   // This method is executed in the event loop thread.
   // By the time flow of control arrives here the original Epoll instance that
   // registered interest in the event may no longer have this interest. If
@@ -358,14 +361,14 @@ void Epoll::DispatchEvent(int err, struct epoll_event *event) {
 
   if (err) {
     v8::Local<v8::Value> args[1] = {
-      v8::Exception::Error(v8::String::New(strerror(err)))
+      v8::Exception::Error(NanNew<v8::String>(strerror(err)))
     };
     callback_->Call(1, args);
   } else {
     v8::Local<v8::Value> args[3] = {
-      NanNewLocal<v8::Value>(v8::Null()),
-      v8::Integer::New(event->data.fd),
-      v8::Integer::New(event->events)
+      NanNew(NanNull()),
+      NanNew<v8::Integer>(event->data.fd),
+      NanNew<v8::Integer>(event->events)
     };
     callback_->Call(3, args);
   }

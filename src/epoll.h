@@ -4,7 +4,11 @@
 class Epoll : public node::ObjectWrap {
   public:
     static void Init(v8::Handle<v8::Object> exports);
-    static void DispatchEvent(uv_async_t* handle, int status);
+#if NODE_VERSION_AT_LEAST(0, 11, 13)
+    static void HandleEvent(uv_async_t* handle);
+#else
+    static void HandleEvent(uv_async_t* handle, int status);
+#endif
 
   private:
     Epoll(NanCallback *callback);
