@@ -5,7 +5,7 @@ file descriptors to see if I/O is possible on any of them.
 
 This module was initially written to detect EPOLLPRI events indicating that
 urgent data is available for reading. EPOLLPRI events are triggered by
-interrupt generating [GPIO](https://www.kernel.org/doc/Documentation/gpio.txt)
+interrupt generating [GPIO](https://www.kernel.org/doc/Documentation/gpio/)
 pins. The epoll module is used by [onoff](https://github.com/fivdi/onoff)
 to detect such interrupts.
 
