@@ -1,3 +1,7 @@
+0.1.6 - May 04 2014
+===================
+  * Replace NanSymbol with NanNew<v8:String> [#9](https://github.com/fivdi/epoll/issues/9)
+
 0.1.5 - May 04 2014
 ===================
   * nan 1.0.0 alignment [#8](https://github.com/fivdi/epoll/issues/8)

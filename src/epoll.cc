@@ -144,7 +144,7 @@ void Epoll::Init(v8::Handle<v8::Object> exports) {
   // Constructor
   v8::Local<v8::FunctionTemplate> ctor = NanNew<v8::FunctionTemplate>(Epoll::New);
   NanAssignPersistent(constructor, ctor);
-  ctor->SetClassName(NanSymbol("Epoll"));
+  ctor->SetClassName(NanNew<v8::String>("Epoll"));
   ctor->InstanceTemplate()->SetInternalFieldCount(1);
 
   // Prototype
@@ -154,7 +154,7 @@ void Epoll::Init(v8::Handle<v8::Object> exports) {
   NODE_SET_PROTOTYPE_METHOD(ctor, "close", Close);
 
   v8::Local<v8::ObjectTemplate> proto = ctor->PrototypeTemplate();
-  proto->SetAccessor(NanSymbol("closed"), GetClosed);
+  proto->SetAccessor(NanNew<v8::String>("closed"), GetClosed);
 
   NODE_DEFINE_CONSTANT(ctor, EPOLLIN);
   NODE_DEFINE_CONSTANT(ctor, EPOLLOUT);
@@ -165,7 +165,7 @@ void Epoll::Init(v8::Handle<v8::Object> exports) {
   NODE_DEFINE_CONSTANT(ctor, EPOLLET);
   NODE_DEFINE_CONSTANT(ctor, EPOLLONESHOT);
 
-  exports->Set(NanSymbol("Epoll"), ctor->GetFunction());
+  exports->Set(NanNew<v8::String>("Epoll"), ctor->GetFunction());
 }
 
 
