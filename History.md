@@ -1,4 +1,8 @@
-0.1.6 - May 04 2014
+0.1.7 - May 29 2014
+===================
+  * Fixed date in History.md
+
+0.1.6 - May 29 2014
 ===================
   * Replace NanSymbol with NanNew<v8:String> [#9](https://github.com/fivdi/epoll/issues/9)
 
