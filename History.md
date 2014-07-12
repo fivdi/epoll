@@ -1,3 +1,8 @@
+0.1.8 - Jul 12 2014
+===================
+  * nan 1.2.0
+  * bindings 1.2.1
+
 0.1.7 - May 29 2014
 ===================
   * Fixed date in History.md
@@ -52,7 +57,7 @@
 
 0.0.5 - Sep 25 2013
 ===================
-  * Link remued from readme
+  * Link removed from readme
 
 0.0.4 - Sep 25 2013
 ===================

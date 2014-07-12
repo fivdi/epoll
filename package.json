@@ -1,6 +1,6 @@
 {
   "name": "epoll",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "A low-level Node.js binding for the Linux epoll API",
   "main": "epoll.js",
   "directories": {
@@ -19,8 +19,8 @@
     "node": ">=0.8.0"
   },
   "dependencies": {
-    "bindings": "~1.2.0",
-    "nan": "~1.1.2"
+    "bindings": "~1.2.1",
+    "nan": "~1.2.0"
   },
   "keywords": [
     "epoll",
