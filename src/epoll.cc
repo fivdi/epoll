@@ -156,14 +156,14 @@ void Epoll::Init(v8::Handle<v8::Object> exports) {
   v8::Local<v8::ObjectTemplate> proto = ctor->PrototypeTemplate();
   proto->SetAccessor(NanNew<v8::String>("closed"), GetClosed);
 
-  NODE_DEFINE_CONSTANT(ctor, EPOLLIN);
-  NODE_DEFINE_CONSTANT(ctor, EPOLLOUT);
-  NODE_DEFINE_CONSTANT(ctor, EPOLLRDHUP);
-  NODE_DEFINE_CONSTANT(ctor, EPOLLPRI); // The reason this addon was created!
-  NODE_DEFINE_CONSTANT(ctor, EPOLLERR);
-  NODE_DEFINE_CONSTANT(ctor, EPOLLHUP);
-  NODE_DEFINE_CONSTANT(ctor, EPOLLET);
-  NODE_DEFINE_CONSTANT(ctor, EPOLLONESHOT);
+  NanSetTemplate(ctor, NanNew<v8::String>("EPOLLIN"), NanNew<v8::Integer>(EPOLLIN), v8::ReadOnly);
+  NanSetTemplate(ctor, NanNew<v8::String>("EPOLLOUT"), NanNew<v8::Integer>(EPOLLOUT), v8::ReadOnly);
+  NanSetTemplate(ctor, NanNew<v8::String>("EPOLLRDHUP"), NanNew<v8::Integer>(EPOLLRDHUP), v8::ReadOnly);
+  NanSetTemplate(ctor, NanNew<v8::String>("EPOLLPRI"), NanNew<v8::Integer>(EPOLLPRI), v8::ReadOnly);
+  NanSetTemplate(ctor, NanNew<v8::String>("EPOLLERR"), NanNew<v8::Integer>(EPOLLERR), v8::ReadOnly);
+  NanSetTemplate(ctor, NanNew<v8::String>("EPOLLHUP"), NanNew<v8::Integer>(EPOLLHUP), v8::ReadOnly);
+  NanSetTemplate(ctor, NanNew<v8::String>("EPOLLET"), NanNew<v8::Integer>(EPOLLET), v8::ReadOnly);
+  NanSetTemplate(ctor, NanNew<v8::String>("EPOLLONESHOT"), NanNew<v8::Integer>(EPOLLONESHOT), v8::ReadOnly);
 
   exports->Set(NanNew<v8::String>("Epoll"), ctor->GetFunction());
 }
