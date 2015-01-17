@@ -217,11 +217,11 @@ v0.11.7 | 7152
 v0.10.20 | 5861
 v0.8.22 | 6098
 
-**BeagleBone Black, 1GHz, Ångström v2012.12, Kernel 3.8.13, epoll v0.0.8:**
+**BeagleBone Black, 1GHz, Debian, Kernel 3.8.13, epoll v0.1.11:**
 
 Node.js | Interrupts / Second
 :---: | ---:
-v0.11.8 | 9760
+v0.10.25 | 9133
 
 **Raspberry Pi, 700Mhz, Raspbian, Kernel 3.2.27+, epoll v0.0.6:**
 
