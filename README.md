@@ -1,4 +1,4 @@
-## epoll
+## epoll - io.js and Node.js compatable
 
 A low-level Node.js binding for the Linux epoll API for monitoring multiple
 file descriptors to see if I/O is possible on any of them.
@@ -12,8 +12,6 @@ to detect such interrupts.
 ## Installation
 
     $ [sudo] npm install epoll
-
-epoll is io.js and Node.js compatable.
 
 **BeagleBone Prerequisites**
 
