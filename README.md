@@ -13,6 +13,8 @@ to detect such interrupts.
 
     $ [sudo] npm install epoll
 
+epoll is io.js and Node.js compatable.
+
 **BeagleBone Prerequisites**
 
 Before installing epoll on stock Ångström on the BeagleBone three Python
