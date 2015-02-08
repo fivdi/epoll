@@ -1,13 +1,13 @@
 var Epoll = require('../../build/Release/epoll').Epoll,
   fs = require('fs'),
-  valuefd = fs.openSync('/sys/class/gpio/gpio18/value', 'r'), // 117
+  valuefd = fs.openSync('/sys/class/gpio/gpio4/value', 'r'),
   buffer = new Buffer(1);
 
 // Create a new Epoll. The callback is the interrupt handler.
 var poller = new Epoll(function (err, fd, events) {
   // Read GPIO value file. Reading also clears the interrupt.
   fs.readSync(fd, buffer, 0, 1, 0);
-  console.log(buffer.toString() === '1' ? 'pressed' : 'released');
+  console.log(buffer.toString() === '1' ? 'released' : 'pressed');
 });
 
 // Read the GPIO value file before watching to

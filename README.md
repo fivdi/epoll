@@ -57,13 +57,13 @@ GPIO interrupt.
 ## Example - Watching Buttons
 
 The following example shows how epoll can be used to detect interrupts from a
-momentary push-button connected to GPIO #18 (pin P1-12) on the Raspberry Pi.
+momentary push-button connected to GPIO #4 (pin P1-7) on the Raspberry Pi.
 The source code is available in the [example directory]
 (https://github.com/fivdi/epoll/tree/master/example/watch-button) and can
 easily be modified for using a different GPIO on the Pi or a different platform
 such as the BeagleBone.
 
-The first step is to export GPIO #18 as an interrupt generating input using
+The first step is to export GPIO #4 as an interrupt generating input using
 the export bash script from the examples directory.
 
     $ [sudo] ./export
@@ -71,9 +71,9 @@ the export bash script from the examples directory.
 export:
 ```bash
 #!/bin/sh
-echo 18 > /sys/class/gpio/export
-echo in > /sys/class/gpio/gpio18/direction
-echo both > /sys/class/gpio/gpio18/edge
+echo 4 > /sys/class/gpio/export
+echo in > /sys/class/gpio/gpio4/direction
+echo both > /sys/class/gpio/gpio4/edge
 ```
 
 Then run watch-button to be notified every time the button is pressed and
@@ -85,16 +85,16 @@ watch-button terminates automatically after 30 seconds.
 
 watch-button:
 ```js
-var Epoll = require('epoll').Epoll,
+var Epoll = require('../../build/Release/epoll').Epoll,
   fs = require('fs'),
-  valuefd = fs.openSync('/sys/class/gpio/gpio18/value', 'r'),
+  valuefd = fs.openSync('/sys/class/gpio/gpio4/value', 'r'),
   buffer = new Buffer(1);
 
 // Create a new Epoll. The callback is the interrupt handler.
 var poller = new Epoll(function (err, fd, events) {
   // Read GPIO value file. Reading also clears the interrupt.
   fs.readSync(fd, buffer, 0, 1, 0);
-  console.log(buffer.toString() === '1' ? 'pressed' : 'released');
+  console.log(buffer.toString() === '1' ? 'released' : 'pressed');
 });
 
 // Read the GPIO value file before watching to
@@ -110,7 +110,7 @@ setTimeout(function () {
 }, 30000);
 ```
 
-When watch-button has terminated, GPIO #18 can be unexported using the
+When watch-button has terminated, GPIO #4 can be unexported using the
 unexport bash script.
 
     $ [sudo] ./unexport
@@ -118,7 +118,7 @@ unexport bash script.
 unexport:
 ```bash
 #!/bin/sh
-echo 18 > /sys/class/gpio/unexport
+echo 4 > /sys/class/gpio/unexport
 ```
 
 ## Example - Interrupts per Second
