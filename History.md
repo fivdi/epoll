@@ -1,6 +1,7 @@
 Unpublished
 ===========
   * nan 1.6.2
+  * refactored interrupts-per-second example
 
 0.1.11 - Jan 17 2015
 ====================

@@ -123,41 +123,45 @@ echo 4 > /sys/class/gpio/unexport
 
 ## Example - Interrupts per Second
 
-The following example shows how epoll can be used to detect interrupts when the
-state of an LED connected to GPIO #38 on the BeagleBone changes.
+The following example shows how epoll can be used to determine the number of
+hardware interrupts that can be handled per second on the Raspberry Pi.
 The source code is available in the [example directory]
-(https://github.com/fivdi/epoll/tree/master/example/watch-led) and can
-easily be modified for using a different GPIO on the BeagleBone or a different
-platform such as the Raspberry Pi.
+(https://github.com/fivdi/epoll/tree/master/example/interrupts-per-second) and
+can easily be modified to use different GPIOs on the Raspberry Pi or a
+different platform such as the BeagleBone.
 
-The goal here is to determine how many interrupts can be handled per second.
+In this example, GPIO #7 is wired to one end of a 1kΩ current limiting
+resistor and GPIO #8 is wired to the other end of the resistor. GPIO #7 is an
+input and GPIO #8 is an output.
 
-The first step is to export GPIO #38 as an interrupt generating output (!) using
-the export bash script from the examples directory.
+The first step is to export GPIOs #7 and #8 using the export bash script from
+the examples directory.
 
     $ [sudo] ./export
 
 export:
 ```bash
 #!/bin/sh
-echo 38 > /sys/class/gpio/export
-echo out > /sys/class/gpio/gpio38/direction
-echo both > /sys/class/gpio/gpio38/edge
+echo 7 > /sys/class/gpio/export
+echo 8 > /sys/class/gpio/export
+echo in > /sys/class/gpio/gpio7/direction
+echo both > /sys/class/gpio/gpio7/edge
+echo out > /sys/class/gpio/gpio8/direction
 ```
 
-Then run watch-led. watch-led toggles the state of the LED every time it
-detects an interrupt. Each toggle will trigger the next interrupt. After five
-seconds, watch-led prints the number of interrupts it detected per second. The
-LED is turned on and off several thousand times per second so no blinking will
-be visible, the LED will light at about half brightness.
+Then run interrupts-per-second. interrupts-per-second toggles the state of the
+output every time it detects an interrupt on the input. Each toggle will
+trigger the next interrupt. After five seconds, interrupts-per-second prints
+the number of interrupts it detected per second.
 
-    $ [sudo] node watch-led
+    $ [sudo] node interrupts-per-second
 
-watch-led:
+interrupts-per-second:
 ```js
-var Epoll = require('epoll').Epoll,
+var Epoll = require('../../build/Release/epoll').Epoll,
   fs = require('fs'),
-  valuefd = fs.openSync('/sys/class/gpio/gpio38/value', 'r+'),
+  inputfd = fs.openSync('/sys/class/gpio/gpio7/value', 'r+'),
+  outputfd = fs.openSync('/sys/class/gpio/gpio8/value', 'r+'),
   value = new Buffer(1),  // The three Buffers here are global
   zero = new Buffer('0'), // to improve performance.
   one = new Buffer('1'),
@@ -171,19 +175,19 @@ var poller = new Epoll(function (err, fd, events) {
   count++;
 
   // Read GPIO value file. Reading also clears the interrupt.
-  fs.readSync(fd, value, 0, 1, 0);
+  fs.readSync(inputfd, value, 0, 1, 0);
 
   // Toggle GPIO value. This will eventually result
   // in the next interrupt being triggered.
   nextValue = value[0] === zero[0] ? one : zero;
-  fs.writeSync(fd, nextValue, 0, nextValue.length, 0);
+  fs.writeSync(outputfd, nextValue, 0, nextValue.length, 0);
 });
 
 time = process.hrtime(); // Get start time.
 
 // Start watching for interrupts. This will trigger the first interrupt
 // as the value file already has data waiting for a read.
-poller.add(valuefd, Epoll.EPOLLPRI);
+poller.add(inputfd, Epoll.EPOLLPRI);
 
 // Print interrupt rate to console after 5 seconds.
 setTimeout(function () {
@@ -194,19 +198,20 @@ setTimeout(function () {
   console.log(rate + ' interrupts per second');
 
   // Stop watching.
-  poller.remove(valuefd).close();
+  poller.remove(inputfd).close();
 }, 5000);
 ```
 
-When watch-led has terminated, GPIO #38 can be unexported using the
-unexport bash script.
+When interrupts-per-second has terminated, GPIOs #7 and #8 can be unexported
+using the unexport bash script.
 
     $ [sudo] ./unexport
 
 unexport:
 ```bash
 #!/bin/sh
-echo 38 > /sys/class/gpio/unexport
+echo 7 > /sys/class/gpio/unexport
+echo 8 > /sys/class/gpio/unexport
 ```
 
 Here are some results from the "Interrupts per Second" example.
