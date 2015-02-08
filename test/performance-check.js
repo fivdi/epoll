@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * Determine approximately how many EPOLLIN events can be handled per second.
  *
@@ -18,7 +20,7 @@ var Epoll = require('../build/Release/epoll').Epoll,
   stdin = 0; // fd for stdin
 
 var epoll = new Epoll(function (err, fd, events) {
-  count++;
+  count += 1;
 });
 
 setTimeout(function () {

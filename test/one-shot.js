@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * Make sure a single EPOLLONESHOT event can be handled.
  *
@@ -10,7 +12,7 @@ var Epoll = require('../build/Release/epoll').Epoll,
   stdin = 0; // fd for stdin 
 
 epoll = new Epoll(function (err, fd, events) {
-  eventCount++;
+  eventCount += 1;
 
   if (eventCount === 1) {
     setTimeout(function () {

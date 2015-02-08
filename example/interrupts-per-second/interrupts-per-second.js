@@ -1,3 +1,5 @@
+'use strict';
+
 var Epoll = require('../../build/Release/epoll').Epoll,
   fs = require('fs'),
   inputfd = fs.openSync('/sys/class/gpio/gpio7/value', 'r+'),
@@ -12,7 +14,7 @@ var Epoll = require('../../build/Release/epoll').Epoll,
 var poller = new Epoll(function (err, fd, events) {
   var nextValue;
 
-  count++;
+  count += 1;
 
   // Read GPIO value file. Reading also clears the interrupt.
   fs.readSync(inputfd, value, 0, 1, 0);

@@ -1,8 +1,10 @@
+'use strict';
+
 /*
  * Verify that add and modify accept all valid event types. See issue #2.
  */
 var Epoll = require('../build/Release/epoll').Epoll,
-  epoll = new Epoll(function(){}),
+  epoll = new Epoll(function () {}),
   stdin = 0; // fd for stdin
 
 try {

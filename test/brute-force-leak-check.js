@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * Create a million epoll instances and use each of them to detect a single
  * event. The goal here is ensure that memory usage doesn't constantly increase
@@ -16,7 +18,7 @@ function once() {
   var epoll = new Epoll(function (err, fd, events) {
     epoll.remove(fd).close();
 
-    count++;
+    count += 1;
 
     if (count % 1e5 === 0) {
       console.log('           ' + count + ' instances created and events detected ');

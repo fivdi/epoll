@@ -1,3 +1,5 @@
+'use strict';
+
 var Epoll = require('../../build/Release/epoll').Epoll,
   fs = require('fs'),
   valuefd = fs.openSync('/sys/class/gpio/gpio4/value', 'r'),

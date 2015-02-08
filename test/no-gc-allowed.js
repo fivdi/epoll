@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * This test resulted in a segmentation fault in epoll v0.0.6. See issue #5.
  *

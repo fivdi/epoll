@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * Make sure the process terminates when epoll is used and 'nothing' is
  * actually done. The epoll addon calls uv_ref and uv_unref to keep nodes
@@ -6,6 +8,6 @@
  * If it hangs, there is a problem.
  */
 var Epoll = require('../build/Release/epoll').Epoll,
-  epoll0 = new Epoll(function(){}),
-  epoll1 = new Epoll(function(){});
+  epoll0 = new Epoll(function () {}),
+  epoll1 = new Epoll(function () {});
 
