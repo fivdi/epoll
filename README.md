@@ -214,7 +214,7 @@ echo 7 > /sys/class/gpio/unexport
 echo 8 > /sys/class/gpio/unexport
 ```
 
-Here are some results from the "Interrupts per Second" example.
+Here are some results from the "Interrupts Per Second" example.
 
 **BeagleBone, 720MHz, Ångström v2012.12, Kernel 3.8.13, epoll v0.0.6:**
 
