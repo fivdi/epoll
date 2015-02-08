@@ -1,11 +1,11 @@
 Unpublished
 ===========
   * nan 1.6.2
-  * refactored interrupts-per-second example
+  * refactored interrupts-per-second example [#11](https://github.com/fivdi/epoll/issues/11)
 
 0.1.11 - Jan 17 2015
 ====================
-  * support io.js
+  * support io.js [#10](https://github.com/fivdi/epoll/issues/10)
 
 0.1.10 - Nov 02 2014
 ====================
