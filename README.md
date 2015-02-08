@@ -121,7 +121,7 @@ unexport:
 echo 4 > /sys/class/gpio/unexport
 ```
 
-## Example - Interrupts per Second
+## Example - Interrupts Per Second
 
 The following example shows how epoll can be used to determine the number of
 hardware interrupts that can be handled per second on the Raspberry Pi.
