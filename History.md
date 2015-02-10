@@ -1,5 +1,5 @@
-Unpublished
-===========
+0.1.12 - Feb 10 2015
+====================
   * nan 1.6.2
   * refactored interrupts-per-second example [#11](https://github.com/fivdi/epoll/issues/11)
 
