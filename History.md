@@ -1,3 +1,7 @@
+Unpublished
+===========
+  * io.js v2.0.0+ compatibility [#13](https://github.com/fivdi/epoll/issues/13)
+
 0.1.12 - Feb 10 2015
 ====================
   * nan 1.6.2
