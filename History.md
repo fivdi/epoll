@@ -1,5 +1,5 @@
-Unpublished
-===========
+0.1.13 - May 07 2015
+====================
   * io.js v2.0.0+ compatibility [#13](https://github.com/fivdi/epoll/issues/13)
 
 0.1.12 - Feb 10 2015
