@@ -118,11 +118,11 @@ static int start_watcher() {
 /*
  * Epoll
  */
-v8::Persistent<v8::FunctionTemplate> Epoll::constructor;
+Nan::Persistent<v8::Function> Epoll::constructor;
 std::map<int, Epoll*> Epoll::fd2epoll;
 
 
-Epoll::Epoll(NanCallback *callback)
+Epoll::Epoll(Nan::Callback *callback)
   : callback_(callback), closed_(false) {
 };
 
@@ -133,142 +133,132 @@ Epoll::~Epoll() {
   // not be called. This is therefore not the place for calling the likes of
   // uv_unref, which, in general, must be called to terminate a process
   // gracefully!
-  NanScope();
+  Nan::HandleScope();
   if (callback_) delete callback_;
 };
 
 
-void Epoll::Init(v8::Handle<v8::Object> exports) {
-  NanScope();
-
+NAN_MODULE_INIT(Epoll::Init) {
   // Constructor
-  v8::Local<v8::FunctionTemplate> ctor = NanNew<v8::FunctionTemplate>(Epoll::New);
-  NanAssignPersistent(constructor, ctor);
-  ctor->SetClassName(NanNew<v8::String>("Epoll"));
+  v8::Local<v8::FunctionTemplate> ctor = Nan::New<v8::FunctionTemplate>(Epoll::New);
+  ctor->SetClassName(Nan::New("Epoll").ToLocalChecked());
   ctor->InstanceTemplate()->SetInternalFieldCount(1);
 
   // Prototype
-  NODE_SET_PROTOTYPE_METHOD(ctor, "add", Add);
-  NODE_SET_PROTOTYPE_METHOD(ctor, "modify", Modify);
-  NODE_SET_PROTOTYPE_METHOD(ctor, "remove", Remove);
-  NODE_SET_PROTOTYPE_METHOD(ctor, "close", Close);
+  Nan::SetPrototypeMethod(ctor, "add", Add);
+  Nan::SetPrototypeMethod(ctor, "modify", Modify);
+  Nan::SetPrototypeMethod(ctor, "remove", Remove);
+  Nan::SetPrototypeMethod(ctor, "close", Close);
 
   v8::Local<v8::ObjectTemplate> proto = ctor->PrototypeTemplate();
-  proto->SetAccessor(NanNew<v8::String>("closed"), GetClosed);
+  Nan::SetAccessor(proto, Nan::New<v8::String>("closed").ToLocalChecked(), GetClosed);
 
-  NanSetTemplate(ctor, NanNew<v8::String>("EPOLLIN"), NanNew<v8::Integer>(EPOLLIN), v8::ReadOnly);
-  NanSetTemplate(ctor, NanNew<v8::String>("EPOLLOUT"), NanNew<v8::Integer>(EPOLLOUT), v8::ReadOnly);
-  NanSetTemplate(ctor, NanNew<v8::String>("EPOLLRDHUP"), NanNew<v8::Integer>(EPOLLRDHUP), v8::ReadOnly);
-  NanSetTemplate(ctor, NanNew<v8::String>("EPOLLPRI"), NanNew<v8::Integer>(EPOLLPRI), v8::ReadOnly);
-  NanSetTemplate(ctor, NanNew<v8::String>("EPOLLERR"), NanNew<v8::Integer>(EPOLLERR), v8::ReadOnly);
-  NanSetTemplate(ctor, NanNew<v8::String>("EPOLLHUP"), NanNew<v8::Integer>(EPOLLHUP), v8::ReadOnly);
-  NanSetTemplate(ctor, NanNew<v8::String>("EPOLLET"), NanNew<v8::Integer>(EPOLLET), v8::ReadOnly);
-  NanSetTemplate(ctor, NanNew<v8::String>("EPOLLONESHOT"), NanNew<v8::Integer>(EPOLLONESHOT), v8::ReadOnly);
+  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLIN").ToLocalChecked(), Nan::New<v8::Integer>(EPOLLIN), v8::ReadOnly);
+  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLOUT").ToLocalChecked(), Nan::New<v8::Integer>(EPOLLOUT), v8::ReadOnly);
+  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLRDHUP").ToLocalChecked(), Nan::New<v8::Integer>(EPOLLRDHUP), v8::ReadOnly);
+  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLPRI").ToLocalChecked(), Nan::New<v8::Integer>(EPOLLPRI), v8::ReadOnly);
+  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLERR").ToLocalChecked(), Nan::New<v8::Integer>(EPOLLERR), v8::ReadOnly);
+  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLHUP").ToLocalChecked(), Nan::New<v8::Integer>(EPOLLHUP), v8::ReadOnly);
+  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLET").ToLocalChecked(), Nan::New<v8::Integer>(EPOLLET), v8::ReadOnly);
+  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLONESHOT").ToLocalChecked(), Nan::New<v8::Integer>(EPOLLONESHOT), v8::ReadOnly);
 
-  exports->Set(NanNew<v8::String>("Epoll"), ctor->GetFunction());
+  constructor.Reset(ctor->GetFunction());
+  Nan::Set(target, Nan::New<v8::String>("Epoll").ToLocalChecked(), ctor->GetFunction());
+
+  // TODO - Is it a good idea to throw an exception here?
+  if (int err = start_watcher())
+    Nan::ThrowError(strerror(err)); // TODO - use err also
 }
 
 
 NAN_METHOD(Epoll::New) {
-  NanScope();
+  if (info.Length() < 1 || !info[0]->IsFunction())
+    return Nan::ThrowError("First argument to construtor must be a callback");
 
-  if (args.Length() < 1 || !args[0]->IsFunction())
-    return NanThrowError("First argument to construtor must be a callback");
-
-  NanCallback *callback = new NanCallback(v8::Local<v8::Function>::Cast(args[0]));
+  Nan::Callback *callback = new Nan::Callback(info[0].As<v8::Function>());
 
   Epoll *epoll = new Epoll(callback);
-  epoll->Wrap(args.This());
+  epoll->Wrap(info.This());
 
-  NanReturnValue(args.This());
+  info.GetReturnValue().Set(info.This());
 }
 
 
 NAN_METHOD(Epoll::Add) {
-  NanScope();
-
-  Epoll *epoll = ObjectWrap::Unwrap<Epoll>(args.This());
+  Epoll *epoll = ObjectWrap::Unwrap<Epoll>(info.This());
 
   if (epoll->closed_)
-    return NanThrowError("add can't be called after calling close");
+    return Nan::ThrowError("add can't be called after calling close");
 
   // Epoll.EPOLLET is -0x8000000 on ARM and an IsUint32 check fails so
   // check for IsNumber instead.
-  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsNumber())
-    return NanThrowError("incorrect arguments passed to add"
+  if (info.Length() < 2 || !info[0]->IsInt32() || !info[1]->IsNumber())
+    return Nan::ThrowError("incorrect arguments passed to add"
       "(int fd, int events)");
 
-  int err = epoll->Add(args[0]->Int32Value(), args[1]->Int32Value());
+  int err = epoll->Add(info[0]->Int32Value(), info[1]->Int32Value());
   if (err != 0)
-    return NanThrowError(strerror(err), err);
+    return Nan::ThrowError(strerror(err)); // TODO - use err also
 
-  NanReturnValue(args.This());
+  info.GetReturnValue().Set(info.This());
 }
 
 
 NAN_METHOD(Epoll::Modify) {
-  NanScope();
-
-  Epoll *epoll = ObjectWrap::Unwrap<Epoll>(args.This());
+  Epoll *epoll = ObjectWrap::Unwrap<Epoll>(info.This());
 
   if (epoll->closed_)
-    return NanThrowError("modify can't be called after calling close");
+    return Nan::ThrowError("modify can't be called after calling close");
 
   // Epoll.EPOLLET is -0x8000000 on ARM and an IsUint32 check fails so
   // check for IsNumber instead.
-  if (args.Length() < 2 || !args[0]->IsInt32() || !args[1]->IsNumber())
-    return NanThrowError("incorrect arguments passed to modify"
+  if (info.Length() < 2 || !info[0]->IsInt32() || !info[1]->IsNumber())
+    return Nan::ThrowError("incorrect arguments passed to modify"
       "(int fd, int events)");
 
-  int err = epoll->Modify(args[0]->Int32Value(), args[1]->Int32Value());
+  int err = epoll->Modify(info[0]->Int32Value(), info[1]->Int32Value());
   if (err != 0)
-    return NanThrowError(strerror(err), err);
+    return Nan::ThrowError(strerror(err)); // TODO - use err also
 
-  NanReturnValue(args.This());
+  info.GetReturnValue().Set(info.This());
 }
 
 
 NAN_METHOD(Epoll::Remove) {
-  NanScope();
-
-  Epoll *epoll = ObjectWrap::Unwrap<Epoll>(args.This());
+  Epoll *epoll = ObjectWrap::Unwrap<Epoll>(info.This());
 
   if (epoll->closed_)
-    return NanThrowError("remove can't be called after calling close");
+    return Nan::ThrowError("remove can't be called after calling close");
 
-  if (args.Length() < 1 || !args[0]->IsInt32())
-    return NanThrowError("incorrect arguments passed to remove(int fd)");
+  if (info.Length() < 1 || !info[0]->IsInt32())
+    return Nan::ThrowError("incorrect arguments passed to remove(int fd)");
 
-  int err = epoll->Remove(args[0]->Int32Value());
+  int err = epoll->Remove(info[0]->Int32Value());
   if (err != 0)
-    return NanThrowError(strerror(err), err);
+    return Nan::ThrowError(strerror(err)); // TODO - use err also
 
-  NanReturnValue(args.This());
+  info.GetReturnValue().Set(info.This());
 }
 
 
 NAN_METHOD(Epoll::Close) {
-  NanScope();
-
-  Epoll *epoll = ObjectWrap::Unwrap<Epoll>(args.This());
+  Epoll *epoll = ObjectWrap::Unwrap<Epoll>(info.This());
 
   if (epoll->closed_)
-    return NanThrowError("close can't be called more than once");
+    return Nan::ThrowError("close can't be called more than once");
 
   int err = epoll->Close();
   if (err != 0)
-    return NanThrowError(strerror(err), err);
+    return Nan::ThrowError(strerror(err)); // TODO - use err also
 
-  NanReturnNull();
+  info.GetReturnValue().SetNull();
 }
 
 
 NAN_GETTER(Epoll::GetClosed) {
-  NanScope();
+  Epoll *epoll = ObjectWrap::Unwrap<Epoll>(info.This());
 
-  Epoll *epoll = ObjectWrap::Unwrap<Epoll>(args.This());
-
-  NanReturnValue(NanNew<v8::Boolean>(epoll->closed_));
+  info.GetReturnValue().Set(Nan::New<v8::Boolean>(epoll->closed_));
 }
 
 
@@ -357,35 +347,25 @@ void Epoll::HandleEvent(uv_async_t* handle, int status) {
 
 
 void Epoll::DispatchEvent(int err, struct epoll_event *event) {
-  NanScope();
+  Nan::HandleScope();
 
   if (err) {
     v8::Local<v8::Value> args[1] = {
-      v8::Exception::Error(NanNew<v8::String>(strerror(err)))
+      v8::Exception::Error(Nan::New<v8::String>(strerror(err)).ToLocalChecked())
     };
     callback_->Call(1, args);
   } else {
     v8::Local<v8::Value> args[3] = {
-      NanNew(NanNull()),
-      NanNew<v8::Integer>(event->data.fd),
-      NanNew<v8::Integer>(event->events)
+      Nan::New(Nan::Null()),
+      Nan::New<v8::Integer>(event->data.fd),
+      Nan::New<v8::Integer>(event->events)
     };
     callback_->Call(3, args);
   }
 }
 
 
-extern "C" void Init(v8::Handle<v8::Object> exports) {
-  NanScope();
-
-  Epoll::Init(exports);
-  
-  // TODO - Is it a good idea to throw an exception here?
-  if (int err = start_watcher())
-    NanThrowError(strerror(err), err);
-}
-
-NODE_MODULE(epoll, Init)
+NODE_MODULE(epoll, Epoll::Init)
 
 #endif
 
