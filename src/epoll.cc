@@ -133,7 +133,7 @@ Epoll::~Epoll() {
   // not be called. This is therefore not the place for calling the likes of
   // uv_unref, which, in general, must be called to terminate a process
   // gracefully!
-  Nan::HandleScope();
+  Nan::HandleScope scope;
   if (callback_) delete callback_;
 };
 
@@ -347,7 +347,7 @@ void Epoll::HandleEvent(uv_async_t* handle, int status) {
 
 
 void Epoll::DispatchEvent(int err, struct epoll_event *event) {
-  Nan::HandleScope();
+  Nan::HandleScope scope;
 
   if (err) {
     v8::Local<v8::Value> args[1] = {

@@ -1,7 +1,7 @@
 #ifndef EPOLL_H
 #define EPOLL_H
 
-class Epoll : public node::ObjectWrap {
+class Epoll : public Nan::ObjectWrap {
   public:
     static NAN_MODULE_INIT(Init);
 #if NODE_VERSION_AT_LEAST(0, 11, 13)

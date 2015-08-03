@@ -23,7 +23,7 @@ function once() {
     if (count % 1e5 === 0) {
       console.log('           ' + count + ' instances created and events detected ');
     }
-    if (count < 1e6) {
+    if (count < 1e9) {
       once();
     } else {
       util.read(fd); // read stdin (the newline)
