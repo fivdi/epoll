@@ -1,3 +1,7 @@
+0.1.15 - Aug 24 2015
+====================
+  * fix null passed to callback
+
 0.1.14 - Aug 24 2015
 ====================
   * nan2 migration
