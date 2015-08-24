@@ -1,3 +1,7 @@
+0.1.14 - Aug 24 2015
+====================
+  * nan2 migration
+
 0.1.13 - May 07 2015
 ====================
   * io.js v2.0.0+ compatibility [#13](https://github.com/fivdi/epoll/issues/13)
