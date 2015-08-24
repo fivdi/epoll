@@ -1,9 +1,9 @@
 #ifndef EPOLL_H
 #define EPOLL_H
 
-class Epoll : public node::ObjectWrap {
+class Epoll : public Nan::ObjectWrap {
   public:
-    static void Init(v8::Handle<v8::Object> exports);
+    static NAN_MODULE_INIT(Init);
 #if NODE_VERSION_AT_LEAST(0, 11, 13)
     static void HandleEvent(uv_async_t* handle);
 #else
@@ -11,7 +11,7 @@ class Epoll : public node::ObjectWrap {
 #endif
 
   private:
-    Epoll(NanCallback *callback);
+    Epoll(Nan::Callback *callback);
     ~Epoll();
 
     static NAN_METHOD(New);
@@ -27,11 +27,11 @@ class Epoll : public node::ObjectWrap {
     int Close();
     void DispatchEvent(int err, struct epoll_event *event);
 
-    NanCallback *callback_;
+    Nan::Callback *callback_;
     std::list<int> fds_;
     bool closed_;
 
-    static v8::Persistent<v8::FunctionTemplate> constructor;
+    static Nan::Persistent<v8::Function> constructor;
     static std::map<int, Epoll*> fd2epoll;
 };
 
