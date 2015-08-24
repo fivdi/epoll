@@ -356,7 +356,7 @@ void Epoll::DispatchEvent(int err, struct epoll_event *event) {
     callback_->Call(1, args);
   } else {
     v8::Local<v8::Value> args[3] = {
-      Nan::New(Nan::Null()),
+      Nan::Null(),
       Nan::New<v8::Integer>(event->data.fd),
       Nan::New<v8::Integer>(event->events)
     };
