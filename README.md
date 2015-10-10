@@ -13,7 +13,7 @@ to detect such interrupts.
 
 ## Installation
 
-    $ [sudo] npm install epoll
+    $ npm install epoll
 
 If you're using io.js v3 or Node.js v4 and seeing lots of compile errors
 when installing onoff, it's very likely that gcc/g++ 4.8 or higher are not
@@ -24,19 +24,6 @@ for details.
 If you're using Node.js v0.10.29 on the BeagleBone Black and seeing a compile
 error saying that `‘REPLACE_INVALID_UTF8’ is not a member of ‘v8::String’`
 see [Node.js v0.10.29 and native addons on the BeagleBone Black](https://github.com/fivdi/onoff/wiki/Node.js-v0.10.29-and-native-addons-on-the-BeagleBone-Black).
-
-**BeagleBone Prerequisites**
-
-Before installing epoll on stock Ångström on the BeagleBone three Python
-modules need to be installed; python-compiler, python-misc, and
-python-multiprocessing. They can be installed with the following commands:
-
-```bash
-$ opkg update
-$ opkg install python-compiler
-$ opkg install python-misc
-$ opkg install python-multiprocessing
-```
 
 ## API
 
