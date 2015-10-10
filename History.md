@@ -1,3 +1,7 @@
+Unpublished
+===========
+  * nan 2.1.0
+
 0.1.15 - Aug 24 2015
 ====================
   * fix null passed to callback
