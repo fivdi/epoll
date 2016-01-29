@@ -1,3 +1,7 @@
+Unpublished
+===========
+  * nan 2.2.0
+
 0.1.16 - Oct 10 2015
 ====================
   * documentation
