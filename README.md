@@ -1,8 +1,6 @@
 ## epoll
 
-**epoll is io.js and Node.js compatable**
-
-A low-level Node.js binding for the Linux epoll API for monitoring multiple
+A low-level **Node.js** binding for the Linux epoll API for monitoring multiple
 file descriptors to see if I/O is possible on any of them.
 
 This module was initially written to detect EPOLLPRI events indicating that
@@ -15,9 +13,9 @@ to detect such interrupts.
 
     $ npm install epoll
 
-If you're using io.js v3 or Node.js v4 or higher and seeing lots of compile
-errors when installing epoll, it's very likely that gcc/g++ 4.8 or higher are
-not installed. See
+If you're using Node.js v4 or higher and seeing lots of compile errors when
+installing epoll, it's very likely that gcc/g++ 4.8 or higher are not
+installed. See
 [Node.js v4 and native addons](https://github.com/fivdi/onoff/wiki/Node.js-v4-and-native-addons)
 for details.
 
