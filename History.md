@@ -1,3 +1,7 @@
+Unpublished
+===========
+  * upgrade to NAN v2.3.2 for Node.js v6.0.0 compatability
+
 0.1.17 - Jan 29 2016
 ====================
   * nan 2.2.0
