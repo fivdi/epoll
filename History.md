@@ -1,3 +1,7 @@
+0.1.19 - May 03 2016
+====================
+  * add accessor for closed property to instance template
+
 0.1.18 - Apr 27 2016
 ====================
   * upgrade to NAN v2.3.2 for Node.js v6.0.0 compatability
