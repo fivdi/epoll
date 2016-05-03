@@ -140,7 +140,8 @@ Epoll::~Epoll() {
 
 NAN_MODULE_INIT(Epoll::Init) {
   // Constructor
-  v8::Local<v8::FunctionTemplate> ctor = Nan::New<v8::FunctionTemplate>(Epoll::New);
+  v8::Local<v8::FunctionTemplate> ctor =
+    Nan::New<v8::FunctionTemplate>(Epoll::New);
   ctor->SetClassName(Nan::New("Epoll").ToLocalChecked());
   ctor->InstanceTemplate()->SetInternalFieldCount(1);
 
@@ -151,19 +152,29 @@ NAN_MODULE_INIT(Epoll::Init) {
   Nan::SetPrototypeMethod(ctor, "close", Close);
 
   v8::Local<v8::ObjectTemplate> itpl = ctor->InstanceTemplate();
-  Nan::SetAccessor(itpl, Nan::New<v8::String>("closed").ToLocalChecked(), GetClosed);
+  Nan::SetAccessor(itpl, Nan::New<v8::String>("closed").ToLocalChecked(),
+    GetClosed);
 
-  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLIN").ToLocalChecked(), Nan::New<v8::Integer>(EPOLLIN), v8::ReadOnly);
-  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLOUT").ToLocalChecked(), Nan::New<v8::Integer>(EPOLLOUT), v8::ReadOnly);
-  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLRDHUP").ToLocalChecked(), Nan::New<v8::Integer>(EPOLLRDHUP), v8::ReadOnly);
-  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLPRI").ToLocalChecked(), Nan::New<v8::Integer>(EPOLLPRI), v8::ReadOnly);
-  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLERR").ToLocalChecked(), Nan::New<v8::Integer>(EPOLLERR), v8::ReadOnly);
-  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLHUP").ToLocalChecked(), Nan::New<v8::Integer>(EPOLLHUP), v8::ReadOnly);
-  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLET").ToLocalChecked(), Nan::New<v8::Integer>(EPOLLET), v8::ReadOnly);
-  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLONESHOT").ToLocalChecked(), Nan::New<v8::Integer>(EPOLLONESHOT), v8::ReadOnly);
+  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLIN").ToLocalChecked(),
+    Nan::New<v8::Integer>(EPOLLIN), v8::ReadOnly);
+  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLOUT").ToLocalChecked(),
+    Nan::New<v8::Integer>(EPOLLOUT), v8::ReadOnly);
+  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLRDHUP").ToLocalChecked(),
+    Nan::New<v8::Integer>(EPOLLRDHUP), v8::ReadOnly);
+  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLPRI").ToLocalChecked(),
+    Nan::New<v8::Integer>(EPOLLPRI), v8::ReadOnly);
+  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLERR").ToLocalChecked(),
+    Nan::New<v8::Integer>(EPOLLERR), v8::ReadOnly);
+  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLHUP").ToLocalChecked(),
+    Nan::New<v8::Integer>(EPOLLHUP), v8::ReadOnly);
+  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLET").ToLocalChecked(),
+    Nan::New<v8::Integer>(EPOLLET), v8::ReadOnly);
+  Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLONESHOT").ToLocalChecked(),
+    Nan::New<v8::Integer>(EPOLLONESHOT), v8::ReadOnly);
 
   constructor.Reset(ctor->GetFunction());
-  Nan::Set(target, Nan::New<v8::String>("Epoll").ToLocalChecked(), ctor->GetFunction());
+  Nan::Set(target, Nan::New<v8::String>("Epoll").ToLocalChecked(),
+    ctor->GetFunction());
 
   // TODO - Is it a good idea to throw an exception here?
   if (int err = start_watcher())
@@ -351,7 +362,9 @@ void Epoll::DispatchEvent(int err, struct epoll_event *event) {
 
   if (err) {
     v8::Local<v8::Value> args[1] = {
-      v8::Exception::Error(Nan::New<v8::String>(strerror(err)).ToLocalChecked())
+      v8::Exception::Error(
+        Nan::New<v8::String>(strerror(err)).ToLocalChecked()
+      )
     };
     callback_->Call(1, args);
   } else {
