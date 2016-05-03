@@ -150,8 +150,8 @@ NAN_MODULE_INIT(Epoll::Init) {
   Nan::SetPrototypeMethod(ctor, "remove", Remove);
   Nan::SetPrototypeMethod(ctor, "close", Close);
 
-  v8::Local<v8::ObjectTemplate> proto = ctor->PrototypeTemplate();
-  Nan::SetAccessor(proto, Nan::New<v8::String>("closed").ToLocalChecked(), GetClosed);
+  v8::Local<v8::ObjectTemplate> itpl = ctor->InstanceTemplate();
+  Nan::SetAccessor(itpl, Nan::New<v8::String>("closed").ToLocalChecked(), GetClosed);
 
   Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLIN").ToLocalChecked(), Nan::New<v8::Integer>(EPOLLIN), v8::ReadOnly);
   Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLOUT").ToLocalChecked(), Nan::New<v8::Integer>(EPOLLOUT), v8::ReadOnly);
