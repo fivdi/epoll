@@ -11,6 +11,9 @@ to detect such interrupts.
 
 ## Installation
 
+Note that epoll can only be installed successfully on Linux systems. Attempting
+to install epoll on other systems will result in compile errors.
+
     $ npm install epoll
 
 If you're using Node.js v4 or higher and seeing lots of compile errors when

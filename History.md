@@ -1,3 +1,7 @@
+Unpublished
+===========
+  * document dependency on Linux
+
 0.1.19 - May 03 2016
 ====================
   * add accessor for closed property to instance template
