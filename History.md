@@ -1,5 +1,5 @@
-Unpublished
-===========
+0.1.20 - Jul 22 2016
+====================
   * document dependency on Linux
   * nan 2.4.0
 
