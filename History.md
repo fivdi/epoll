@@ -1,5 +1,5 @@
-Unpublished
-===========
+0.1.21 - Feb 12 2017
+====================
   * require node v0.10 or higher
   * nan 2.5.1
 
