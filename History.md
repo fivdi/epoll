@@ -1,6 +1,7 @@
 Unpublished
 ===========
   * require node v0.10 or higher
+  * nan 2.5.1
 
 0.1.20 - Jul 22 2016
 ====================
