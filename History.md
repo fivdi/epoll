@@ -1,3 +1,7 @@
+Unpublished
+===========
+  * require node v0.10 or higher
+
 0.1.20 - Jul 22 2016
 ====================
   * document dependency on Linux
