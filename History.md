@@ -1,5 +1,5 @@
-Unpublished
-===========
+1.0.0 - Oct 15 2017
+===================
   * update dependencies (bindings v1.3.0, nan v2.7.0)
   * document supported node versions
 
