@@ -1,3 +1,8 @@
+Unpublished
+===========
+  * update dependencies (bindings v1.3.0, nan v2.7.0)
+  * document supported node versions
+
 0.1.22 - Jun 18 2017
 ====================
   * nan 2.6.2
