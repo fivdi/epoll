@@ -1,6 +1,6 @@
 {
   "name": "epoll",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A low-level Node.js binding for the Linux epoll API",
   "main": "epoll.js",
   "directories": {
