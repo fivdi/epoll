@@ -2,6 +2,7 @@ Unpublished
 ===========
 
   * suppress deprecated-declaration warnings
+  * document node 9 support
 
 1.0.0 - Oct 15 2017
 ===================
