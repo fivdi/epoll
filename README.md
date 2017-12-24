@@ -18,20 +18,6 @@ to install epoll on other systems will result in compile errors.
 
     $ npm install epoll
 
-If you're using Node.js v4 or higher and seeing lots of compile errors when
-installing epoll, it's very likely that gcc/g++ 4.8 or higher are not
-installed. See
-[Node.js v4 and native addons](https://github.com/fivdi/onoff/wiki/Node.js-v4-and-native-addons)
-for details.
-
-If you're using Node.js v0.10.29 on the Raspberry Pi and seeing a compile
-error saying that `‘REPLACE_INVALID_UTF8’ is not a member of ‘v8::String’`
-see [Node.js v0.10.29 and native addons on the Raspberry Pi](https://github.com/fivdi/onoff/wiki/Node.js-v0.10.29-and-native-addons-on-the-Raspberry-Pi).
-
-If you're using Node.js v0.10.29 on the BeagleBone Black and seeing a compile
-error saying that `‘REPLACE_INVALID_UTF8’ is not a member of ‘v8::String’`
-see [Node.js v0.10.29 and native addons on the BeagleBone Black](https://github.com/fivdi/onoff/wiki/Node.js-v0.10.29-and-native-addons-on-the-BeagleBone-Black).
-
 ## API
 
   * Epoll(callback) - Constructor. The callback is called when epoll events
