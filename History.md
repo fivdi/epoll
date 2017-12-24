@@ -2,6 +2,7 @@ Unpublished
 ===========
 
   * don't suppress deprecated-declaration warnings
+  * nan 2.8.0
 
 1.0.1 - Nov 04 2017
 ===================
