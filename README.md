@@ -56,7 +56,7 @@ such as the BeagleBone.
 The first step is to export GPIO #4 as an interrupt generating input using
 the export bash script from the examples directory.
 
-    $ [sudo] ./export
+    $ ./export
 
 export:
 ```bash
@@ -71,7 +71,7 @@ released. If there is no hardware debounce circuit for the push-button, contact
 bounce issues are very likely to be visible on the console output.
 watch-button terminates automatically after 30 seconds.
 
-    $ [sudo] node watch-button
+    $ node watch-button
 
 watch-button:
 ```js
@@ -103,7 +103,7 @@ setTimeout(function () {
 When watch-button has terminated, GPIO #4 can be unexported using the
 unexport bash script.
 
-    $ [sudo] ./unexport
+    $ ./unexport
 
 unexport:
 ```bash
@@ -127,7 +127,7 @@ input and GPIO #8 is an output.
 The first step is to export GPIOs #7 and #8 using the export bash script from
 the examples directory.
 
-    $ [sudo] ./export
+    $ ./export
 
 export:
 ```bash
@@ -144,7 +144,7 @@ output every time it detects an interrupt on the input. Each toggle will
 trigger the next interrupt. After five seconds, interrupts-per-second prints
 the number of interrupts it detected per second.
 
-    $ [sudo] node interrupts-per-second
+    $ node interrupts-per-second
 
 interrupts-per-second:
 ```js
@@ -195,7 +195,7 @@ setTimeout(function () {
 When interrupts-per-second has terminated, GPIOs #7 and #8 can be unexported
 using the unexport bash script.
 
-    $ [sudo] ./unexport
+    $ ./unexport
 
 unexport:
 ```bash
