@@ -16,7 +16,9 @@ epoll supports Node.js versions 0.10, 0.12, 4, 5, 6, 7, 8 and 9.
 Note that epoll can only be installed successfully on Linux systems. Attempting
 to install epoll on other systems will result in compile errors.
 
-    $ npm install epoll
+```
+npm install epoll
+```
 
 ## API
 
@@ -56,9 +58,12 @@ such as the BeagleBone.
 The first step is to export GPIO #4 as an interrupt generating input using
 the export bash script from the examples directory.
 
-    $ ./export
+```
+./export
+```
 
 export:
+
 ```bash
 #!/bin/sh
 echo 4 > /sys/class/gpio/export
@@ -71,9 +76,12 @@ released. If there is no hardware debounce circuit for the push-button, contact
 bounce issues are very likely to be visible on the console output.
 watch-button terminates automatically after 30 seconds.
 
-    $ node watch-button
+```
+node watch-button
+```
 
 watch-button:
+
 ```js
 var Epoll = require('../../build/Release/epoll').Epoll,
   fs = require('fs'),
@@ -103,9 +111,12 @@ setTimeout(function () {
 When watch-button has terminated, GPIO #4 can be unexported using the
 unexport bash script.
 
-    $ ./unexport
+```
+./unexport
+```
 
 unexport:
+
 ```bash
 #!/bin/sh
 echo 4 > /sys/class/gpio/unexport
@@ -127,9 +138,12 @@ input and GPIO #8 is an output.
 The first step is to export GPIOs #7 and #8 using the export bash script from
 the examples directory.
 
-    $ ./export
+```
+./export
+```
 
 export:
+
 ```bash
 #!/bin/sh
 echo 7 > /sys/class/gpio/export
@@ -144,9 +158,12 @@ output every time it detects an interrupt on the input. Each toggle will
 trigger the next interrupt. After five seconds, interrupts-per-second prints
 the number of interrupts it detected per second.
 
-    $ node interrupts-per-second
+```
+node interrupts-per-second
+```
 
 interrupts-per-second:
+
 ```js
 var Epoll = require('../../build/Release/epoll').Epoll,
   fs = require('fs'),
@@ -195,9 +212,12 @@ setTimeout(function () {
 When interrupts-per-second has terminated, GPIOs #7 and #8 can be unexported
 using the unexport bash script.
 
-    $ ./unexport
+```
+./unexport
+```
 
 unexport:
+
 ```bash
 #!/bin/sh
 echo 7 > /sys/class/gpio/unexport
