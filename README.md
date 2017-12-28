@@ -1,4 +1,4 @@
-## epoll
+# epoll
 
 A low-level **Node.js** binding for the Linux epoll API for monitoring multiple
 file descriptors to see if I/O is possible on any of them.
