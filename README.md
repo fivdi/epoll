@@ -50,10 +50,10 @@ GPIO interrupt.
 
 The following example shows how epoll can be used to detect interrupts from a
 momentary push-button connected to GPIO #4 (pin P1-7) on the Raspberry Pi.
-The source code is available in the [example directory]
-(https://github.com/fivdi/epoll/tree/master/example/watch-button) and can
-easily be modified for using a different GPIO on the Pi or a different platform
-such as the BeagleBone.
+The source code is available in the
+[example directory](https://github.com/fivdi/epoll/tree/master/example/watch-button)
+and can easily be modified for using a different GPIO on the Pi or a different
+platform such as the BeagleBone.
 
 The first step is to export GPIO #4 as an interrupt generating input using
 the export bash script from the examples directory.
@@ -126,9 +126,9 @@ echo 4 > /sys/class/gpio/unexport
 
 The following example shows how epoll can be used to determine the number of
 hardware interrupts that can be handled per second on the Raspberry Pi.
-The source code is available in the [example directory]
-(https://github.com/fivdi/epoll/tree/master/example/interrupts-per-second) and
-can easily be modified to use different GPIOs on the Raspberry Pi or a
+The source code is available in the
+[example directory](https://github.com/fivdi/epoll/tree/master/example/interrupts-per-second)
+and can easily be modified to use different GPIOs on the Raspberry Pi or a
 different platform such as the BeagleBone.
 
 In this example, GPIO #7 is wired to one end of a 1kΩ current limiting
