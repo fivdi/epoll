@@ -1,6 +1,7 @@
 Unpublished
 ===========
   * update dependencies (nan v2.9.2)
+  * fix deprecations
 
 1.0.2 - Dec 24 2017
 ===================

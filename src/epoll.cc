@@ -359,6 +359,7 @@ void Epoll::HandleEvent(uv_async_t* handle, int status) {
 
 void Epoll::DispatchEvent(int err, struct epoll_event *event) {
   Nan::HandleScope scope;
+  Nan::AsyncResource resource("Epoll:DispatchEvent");
 
   if (err) {
     v8::Local<v8::Value> args[1] = {
@@ -366,14 +367,14 @@ void Epoll::DispatchEvent(int err, struct epoll_event *event) {
         Nan::New<v8::String>(strerror(err)).ToLocalChecked()
       )
     };
-    callback_->Call(1, args);
+    callback_->Call(1, args, &resource);
   } else {
     v8::Local<v8::Value> args[3] = {
       Nan::Null(),
       Nan::New<v8::Integer>(event->data.fd),
       Nan::New<v8::Integer>(event->events)
     };
-    callback_->Call(3, args);
+    callback_->Call(3, args, &resource);
   }
 }
 
