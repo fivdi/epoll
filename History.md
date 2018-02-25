@@ -1,3 +1,7 @@
+Unpublished
+===========
+  * update dependencies (nan v2.9.2)
+
 1.0.2 - Dec 24 2017
 ===================
   * don't suppress deprecated-declaration warnings
