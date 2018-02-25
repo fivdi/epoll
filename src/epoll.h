@@ -4,11 +4,7 @@
 class Epoll : public Nan::ObjectWrap {
   public:
     static NAN_MODULE_INIT(Init);
-#if NODE_VERSION_AT_LEAST(0, 11, 13)
     static void HandleEvent(uv_async_t* handle);
-#else
-    static void HandleEvent(uv_async_t* handle, int status);
-#endif
 
   private:
     Epoll(Nan::Callback *callback);
