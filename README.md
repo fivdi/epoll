@@ -9,7 +9,7 @@ interrupt generating [GPIO](https://www.kernel.org/doc/Documentation/gpio/)
 pins. The epoll module is used by [onoff](https://github.com/fivdi/onoff)
 to detect such interrupts.
 
-epoll supports Node.js versions 4, 6, 8 and 9.
+epoll supports Node.js versions 4, 6, 8 and 10.
 
 ## Installation
 
