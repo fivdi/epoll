@@ -1,7 +1,7 @@
 /*
  * This program simulates the coin acceptor discussed in
- * https://github.com/fivdi/epoll/issues/26 on an atmega328p. Every two second
- * the program will generate five pulses to simulate a five peso coin.
+ * https://github.com/fivdi/epoll/issues/26 on an atmega328p. Every two
+ * seconds the program will generate five pulses to simulate a five peso coin.
  * The program stops after simulating 10.000 coins.
  */
 #include <avr/io.h>
