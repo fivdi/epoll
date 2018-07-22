@@ -1,5 +1,6 @@
 Unpublished
 ===========
+  * add coin acceptor stress test
   * replace new Buffer with Buffer.from or Buffer.alloc
   * sleep for one second after exporting gpios to avoid permission issues
 
