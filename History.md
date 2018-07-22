@@ -1,6 +1,7 @@
 Unpublished
 ===========
   * replace new Buffer with Buffer.from or Buffer.alloc
+  * sleep for one second after exporting gpios to avoid permission issues
 
 2.0.1 - Apr 02 2018
 ===================

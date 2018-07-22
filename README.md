@@ -67,6 +67,7 @@ export:
 ```bash
 #!/bin/sh
 echo 4 > /sys/class/gpio/export
+sleep 1
 echo in > /sys/class/gpio/gpio4/direction
 echo both > /sys/class/gpio/gpio4/edge
 ```
@@ -148,6 +149,7 @@ export:
 #!/bin/sh
 echo 7 > /sys/class/gpio/export
 echo 8 > /sys/class/gpio/export
+sleep 1
 echo in > /sys/class/gpio/gpio7/direction
 echo both > /sys/class/gpio/gpio7/edge
 echo out > /sys/class/gpio/gpio8/direction
