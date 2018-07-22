@@ -3,7 +3,7 @@
 var Epoll = require('../../build/Release/epoll').Epoll,
   fs = require('fs'),
   valuefd = fs.openSync('/sys/class/gpio/gpio4/value', 'r'),
-  buffer = new Buffer(1);
+  buffer = Buffer.alloc(1);
 
 // Create a new Epoll. The callback is the interrupt handler.
 var poller = new Epoll(function (err, fd, events) {

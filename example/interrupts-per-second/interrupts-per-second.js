@@ -4,9 +4,9 @@ var Epoll = require('../../build/Release/epoll').Epoll,
   fs = require('fs'),
   inputfd = fs.openSync('/sys/class/gpio/gpio7/value', 'r+'),
   outputfd = fs.openSync('/sys/class/gpio/gpio8/value', 'r+'),
-  value = new Buffer(1),  // The three Buffers here are global
-  zero = new Buffer('0'), // to improve performance.
-  one = new Buffer('1'),
+  value = Buffer.alloc(1),  // The three Buffers here are global
+  zero = Buffer.from('0'), // to improve performance.
+  one = Buffer.from('1'),
   count = 0,
   time;
 
