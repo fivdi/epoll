@@ -110,6 +110,7 @@ std::map<int, Epoll*> Epoll::fd2epoll;
 
 Epoll::Epoll(Nan::Callback *callback)
   : callback_(callback), closed_(false) {
+  async_resource_ = new Nan::AsyncResource("Epoll:DispatchEvent");
 };
 
 
@@ -121,6 +122,7 @@ Epoll::~Epoll() {
   // gracefully!
   Nan::HandleScope scope;
   if (callback_) delete callback_;
+  if (async_resource_) delete async_resource_;
 };
 
 
@@ -312,7 +314,10 @@ int Epoll::Close() {
 
   delete callback_;
   callback_ = 0;
-  
+
+  delete async_resource_;
+  async_resource_ = 0;
+
   std::list<int>::iterator it = fds_.begin();
   for (; it != fds_.end(); it = fds_.begin()) {
     int err = Remove(*it);
@@ -341,7 +346,6 @@ void Epoll::HandleEvent(uv_async_t* handle) {
 
 void Epoll::DispatchEvent(int err, struct epoll_event *event) {
   Nan::HandleScope scope;
-  Nan::AsyncResource resource("Epoll:DispatchEvent");
 
   if (err) {
     v8::Local<v8::Value> args[1] = {
@@ -349,14 +353,14 @@ void Epoll::DispatchEvent(int err, struct epoll_event *event) {
         Nan::New<v8::String>(strerror(err)).ToLocalChecked()
       )
     };
-    callback_->Call(1, args, &resource);
+    callback_->Call(1, args, async_resource_);
   } else {
     v8::Local<v8::Value> args[3] = {
       Nan::Null(),
       Nan::New<v8::Integer>(event->data.fd),
       Nan::New<v8::Integer>(event->events)
     };
-    callback_->Call(3, args, &resource);
+    callback_->Call(3, args, async_resource_);
   }
 }
 

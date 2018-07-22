@@ -24,6 +24,7 @@ class Epoll : public Nan::ObjectWrap {
     void DispatchEvent(int err, struct epoll_event *event);
 
     Nan::Callback *callback_;
+    Nan::AsyncResource *async_resource_;
     std::list<int> fds_;
     bool closed_;
 
