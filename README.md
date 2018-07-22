@@ -231,7 +231,7 @@ Here are some results from the "Interrupts Per Second" example.
 **Raspberry Pi 3, 1.2Ghz, Raspbian:**
 
 node | epoll | kernel | interrupts / sec
-:---: | :---: | :---: | ---: | ---: | ---:
+:---: | :---: | :---: | ---:
 v10.7.0 | v2.0.2 | 4.14.50-v7+ | 22468
 v8.11.3 | v2.0.2 | 4.14.50-v7+ | 21022
 v6.14.3 | v2.0.2 | 4.14.50-v7+ | 22745
