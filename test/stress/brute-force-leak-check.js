@@ -9,19 +9,22 @@
  * but doesn't read stdin until it has been notified about the availability of
  * input data 1e9 times.
  */
-var Epoll = require('../build/Release/epoll').Epoll,
-  util = require('./util'),
-  count = 0,
-  stdin = 0; // fd for stdin
+//const Epoll = require('../build/Release/epoll').Epoll;
+const Epoll = require('../../').Epoll;
+const util = require('../util');
 
-function once() {
-  var epoll = new Epoll(function (err, fd, events) {
+const stdin = 0; // fd for stdin
+
+let count = 0;
+
+const once = () => {
+  const epoll = new Epoll((err, fd, events) => {
     epoll.remove(fd).close();
 
     count += 1;
 
     if (count % 1e5 === 0) {
-      console.log('           ' + count + ' instances created and events detected ');
+      console.log(count + ' instances created and events detected ');
     }
     if (count < 1e9) {
       once();

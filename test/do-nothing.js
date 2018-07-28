@@ -7,7 +7,8 @@
  * loop alive unnecessarily long. If the process terminates, everything is ok.
  * If it hangs, there is a problem.
  */
-var Epoll = require('../build/Release/epoll').Epoll,
-  epoll0 = new Epoll(function () {}),
-  epoll1 = new Epoll(function () {});
+const Epoll = require('../').Epoll;
+
+const epoll0 = new Epoll(() => {});
+const epoll1 = new Epoll(() => {});
 

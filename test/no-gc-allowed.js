@@ -10,11 +10,14 @@
  * for best results:
  * echo | node no-gc-allowed
  */
-var Epoll = require('../build/Release/epoll').Epoll;
-var time = process.hrtime();
-var stdin = 0; // fd for stdin 
-var poller = new Epoll(function () {
-  var timeSoFar = process.hrtime(time);
+const Epoll = require('../').Epoll;
+
+const stdin = 0; // fd for stdin 
+
+const time = process.hrtime();
+
+const poller = new Epoll(() => {
+  const timeSoFar = process.hrtime(time);
   if (timeSoFar[0] > 5) {
     // BB faults in ~2.5s, Pi faults in ~?s, so wait about 5s.
     // In order for the segfault to occur, V8 can't have anymore required

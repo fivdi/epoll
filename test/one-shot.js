@@ -5,17 +5,18 @@
  *
  * This test expects a newline as input on stdin.
  */
-var Epoll = require('../build/Release/epoll').Epoll,
-  util = require('./util'),
-  eventCount = 0,
-  epoll,
-  stdin = 0; // fd for stdin 
+const Epoll = require('../').Epoll;
+const util = require('./util');
 
-epoll = new Epoll(function (err, fd, events) {
+const stdin = 0; // fd for stdin 
+
+let eventCount = 0;
+
+const epoll = new Epoll((err, fd, events) => {
   eventCount += 1;
 
   if (eventCount === 1) {
-    setTimeout(function () {
+    setTimeout(() => {
       util.read(fd); // read stdin (the newline)
       epoll.remove(fd).close();
     }, 100);

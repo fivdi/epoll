@@ -13,26 +13,26 @@
  * The newline should be piped in for reasonable results:
  * echo | node performance-check
  */
-var Epoll = require('../build/Release/epoll').Epoll,
-  util = require('./util'),
-  time,
-  count = 0,
-  stdin = 0; // fd for stdin
+const Epoll = require('../').Epoll;
+const util = require('./util');
 
-var epoll = new Epoll(function (err, fd, events) {
+const stdin = 0; // fd for stdin
+
+let time;
+let count = 0;
+
+const epoll = new Epoll((err, fd, events) => {
   count += 1;
 });
 
-setTimeout(function () {
-  var rate;
-
+setTimeout(() => {
   time = process.hrtime(time);
-  rate = Math.floor(count / (time[0] + time[1] / 1E9));
-  console.log('           ' + rate + ' events per second');
+  const rate = Math.floor(count / (time[0] + time[1] / 1E9));
+  console.log('  ' + rate + ' events per second');
 
   epoll.remove(stdin).close();
   util.read(stdin); // read stdin (the newline)
-}, 100);
+}, 1000);
 
 epoll.add(stdin, Epoll.EPOLLIN);
 time = process.hrtime();

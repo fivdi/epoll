@@ -1,20 +1,19 @@
 'use strict';
 
-/*
- *
- */
-var Epoll = require('../build/Release/epoll').Epoll,
-  assert = require('assert'),
-  poller = new Epoll(function () {}),
-  stdin = 0;
+const Epoll = require('../epoll').Epoll;
+const assert = require('assert');
 
-assert(poller.closed === false);
+const stdin = 0;
 
-function closePoller() {
+const poller = new Epoll(() => {});
+
+const closePoller = () => {
   if (!poller.closed) {
     poller.remove(stdin).close();
   }
-}
+};
+
+assert(poller.closed === false);
 
 poller.add(stdin, Epoll.EPOLLIN);
 

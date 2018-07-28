@@ -1,3 +1,7 @@
+Unpublished
+===========
+  * code style
+
 2.0.2 - Jul 22 2018
 ===================
   * add coin acceptor stress test
