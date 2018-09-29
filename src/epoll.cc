@@ -195,7 +195,10 @@ NAN_METHOD(Epoll::Add) {
     return Nan::ThrowError("incorrect arguments passed to add"
       "(int fd, int events)");
 
-  int err = epoll->Add(info[0]->Int32Value(), info[1]->Int32Value());
+  int err = epoll->Add(
+    Nan::To<int32_t>(info[0]).FromJust(),
+    Nan::To<int32_t>(info[1]).FromJust()
+  );
   if (err != 0)
     return Nan::ThrowError(strerror(err)); // TODO - use err also
 
@@ -215,7 +218,10 @@ NAN_METHOD(Epoll::Modify) {
     return Nan::ThrowError("incorrect arguments passed to modify"
       "(int fd, int events)");
 
-  int err = epoll->Modify(info[0]->Int32Value(), info[1]->Int32Value());
+  int err = epoll->Modify(
+    Nan::To<int32_t>(info[0]).FromJust(),
+    Nan::To<int32_t>(info[1]).FromJust()
+  );
   if (err != 0)
     return Nan::ThrowError(strerror(err)); // TODO - use err also
 
@@ -232,7 +238,7 @@ NAN_METHOD(Epoll::Remove) {
   if (info.Length() < 1 || !info[0]->IsInt32())
     return Nan::ThrowError("incorrect arguments passed to remove(int fd)");
 
-  int err = epoll->Remove(info[0]->Int32Value());
+  int err = epoll->Remove(Nan::To<int32_t>(info[0]).FromJust());
   if (err != 0)
     return Nan::ThrowError(strerror(err)); // TODO - use err also
 
