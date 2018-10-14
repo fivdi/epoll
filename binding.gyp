@@ -4,7 +4,8 @@
     "conditions": [[
       '"<!(echo $V)" != "1"', {
         "cflags": [
-          "-Wno-deprecated-declarations"
+          "-Wno-deprecated-declarations",
+          "-Wno-cast-function-type"
         ]
       }]
     ],
