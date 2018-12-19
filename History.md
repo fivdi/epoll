@@ -1,3 +1,7 @@
+Unpublished
+===========
+  * fix deprecation warnings on node.js v12 nightly
+
 2.0.6 - Oct 14 2018
 ===================
   * suppress warnings complaining about casting between incompatible function types (see https://github.com/nodejs/nan/issues/807)

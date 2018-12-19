@@ -160,9 +160,9 @@ NAN_MODULE_INIT(Epoll::Init) {
   Nan::SetTemplate(ctor, Nan::New<v8::String>("EPOLLONESHOT").ToLocalChecked(),
     Nan::New<v8::Integer>(EPOLLONESHOT), v8::ReadOnly);
 
-  constructor.Reset(ctor->GetFunction());
+  constructor.Reset(Nan::GetFunction(ctor).ToLocalChecked());
   Nan::Set(target, Nan::New<v8::String>("Epoll").ToLocalChecked(),
-    ctor->GetFunction());
+    Nan::GetFunction(ctor).ToLocalChecked());
 
   // TODO - Is it a good idea to throw an exception here?
   if (int err = start_watcher())
