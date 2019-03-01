@@ -1,5 +1,5 @@
-Unpublished
-===========
+2.0.8 - Mar 02 2019
+===================
   * add simple stub for non-linux installs
   * don't compile epoll.cc on non-linux systems
   * lint with jshint
