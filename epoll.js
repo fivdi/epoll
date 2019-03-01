@@ -1,9 +1,14 @@
 module.exports = (() => {
   const osType = require('os').type();
+
   if (osType == 'Linux') {
-    require('bindings')('epoll.node');
-  } else {
-    console.warn(`epoll is built for Linux. Reported OS: ${osType}. Begin mock mode.`);
-    return { Epoll: {} }
+    return require('bindings')('epoll.node');
   }
-})()
+
+  console.warn(`Warning: epoll is built for Linux and not intended for usage on ${osType}.`);
+
+  return {
+    Epoll: {}
+  };
+})();
+
