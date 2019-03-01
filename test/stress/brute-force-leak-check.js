@@ -34,7 +34,7 @@ const once = () => {
   });
 
   epoll.add(stdin, Epoll.EPOLLIN);
-}
+};
 
 once();
 
