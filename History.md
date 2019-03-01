@@ -1,3 +1,8 @@
+Unpublished
+===========
+  * add simple stub for non-linux installs
+  * don't compile epoll.cc on non-linux systems
+
 2.0.7 - Dec 19 2018
 ===================
   * fix deprecation warnings on node.js v12 nightly
