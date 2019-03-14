@@ -1,3 +1,7 @@
+2.0.9 - Mar 14 2019
+===================
+  * update dependencies (nan v2.13.0, jshint v2.10.2)
+
 2.0.8 - Mar 02 2019
 ===================
   * add simple stub for non-linux installs
