@@ -1,3 +1,7 @@
+Unpublished
+===========
+  * more linting
+
 2.0.9 - Mar 14 2019
 ===================
   * update dependencies (nan v2.13.0, jshint v2.10.2)

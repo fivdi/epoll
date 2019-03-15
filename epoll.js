@@ -1,7 +1,9 @@
+'use strict';
+
 module.exports = (() => {
   const osType = require('os').type();
 
-  if (osType == 'Linux') {
+  if (osType === 'Linux') {
     return require('bindings')('epoll.node');
   }
 

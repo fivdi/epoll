@@ -8,7 +8,7 @@
     "test": "test"
   },
   "scripts": {
-    "lint": "jshint epoll.js example/*/*.js test/*/*.js",
+    "lint": "jshint *.js example/*/*.js test/*.js test/*/*.js",
     "test": "cd test && ./run-tests && cd ..",
     "install": "node-gyp rebuild"
   },

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // This program successfully detects the pulses for 10.000 five peso coins.
 

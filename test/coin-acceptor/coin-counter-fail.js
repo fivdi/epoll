@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // This program fails to detect all the pulses for 10.000 five peso coins.
 // Each pulse is low for 20 milliseconds and high for 100 milliseconds. The
