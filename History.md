@@ -1,5 +1,5 @@
-Unpublished
-===========
+2.0.10 - Sep 07 2019
+====================
   * more linting
   * update dependencies (nan v2.14.0)
 
