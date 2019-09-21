@@ -1,3 +1,7 @@
+Unpublished
+===========
+  * drop support for node.js 4
+
 2.0.10 - Sep 07 2019
 ====================
   * more linting
