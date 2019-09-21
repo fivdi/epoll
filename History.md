@@ -1,5 +1,5 @@
-Unpublished
-===========
+3.0.0 - Sep 21 2019
+===================
   * drop support for node.js 4
 
 2.0.10 - Sep 07 2019
