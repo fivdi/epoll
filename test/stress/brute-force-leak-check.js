@@ -17,7 +17,7 @@ const stdin = 0; // fd for stdin
 
 let count = 0;
 
-const once = () => {
+const once = _ => {
   const epoll = new Epoll((err, fd, events) => {
     epoll.remove(fd).close();
 

@@ -25,7 +25,7 @@ const epoll = new Epoll((err, fd, events) => {
   count += 1;
 });
 
-setTimeout(() => {
+setTimeout(_ => {
   time = process.hrtime(time);
   const rate = Math.floor(count / (time[0] + time[1] / 1E9));
   console.log('  ' + rate + ' events per second');

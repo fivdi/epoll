@@ -9,7 +9,7 @@ let fallingPulses = 0;
 let risingPulses = 0;
 let errors = 0;
 
-setInterval(() => {
+setInterval(_ => {
   console.log(
     'fallingPulses: ' + fallingPulses +
      ', risingPulses: ' + risingPulses +

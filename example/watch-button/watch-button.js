@@ -21,7 +21,7 @@ fs.readSync(valuefd, buffer, 0, 1, 0);
 poller.add(valuefd, Epoll.EPOLLPRI);
 
 // Stop watching after 30 seconds.
-setTimeout(() => {
+setTimeout(_ => {
   poller.remove(valuefd).close();
 }, 30000);
 

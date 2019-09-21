@@ -13,7 +13,7 @@ let fallingPulses = 0;
 let risingPulses = 0;
 let errors = 0;
 
-const sleepus = (usDelay) => {
+const sleepus = usDelay => {
   let startTime = process.hrtime();
   let deltaTime;
   let usWaited = 0;
@@ -24,7 +24,7 @@ const sleepus = (usDelay) => {
   }
 };
 
-setInterval(() => {
+setInterval(_ => {
   console.log(
     'fallingPulses: ' + fallingPulses +
      ', risingPulses: ' + risingPulses +
@@ -32,7 +32,7 @@ setInterval(() => {
   );
 }, 1000);
 
-setInterval(() => {
+setInterval(_ => {
   sleepus(30000); // Blocks for approx. 30 milliseconds
 }, 100);
 

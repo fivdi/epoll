@@ -109,7 +109,7 @@ fs.readSync(valuefd, buffer, 0, 1, 0);
 poller.add(valuefd, Epoll.EPOLLPRI);
 
 // Stop watching after 30 seconds.
-setTimeout(() => {
+setTimeout(_ => {
   poller.remove(valuefd).close();
 }, 30000);
 ```
@@ -204,7 +204,7 @@ let time = process.hrtime(); // Get start time.
 poller.add(inputfd, Epoll.EPOLLPRI);
 
 // Print interrupt rate to console after 5 seconds.
-setTimeout(() => {
+setTimeout(_ => {
   time = process.hrtime(time); // Get run time.
   const rate = Math.floor(count / (time[0] + time[1] / 1E9));
   console.log(rate + ' interrupts per second');

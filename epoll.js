@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = (() => {
+module.exports = (_ => {
   const osType = require('os').type();
 
   if (osType === 'Linux') {

@@ -16,7 +16,7 @@ const epoll = new Epoll((err, fd, events) => {
   eventCount += 1;
 
   if (eventCount === 1) {
-    setTimeout(() => {
+    setTimeout(_ => {
       util.read(fd); // read stdin (the newline)
       epoll.remove(fd).close();
     }, 100);

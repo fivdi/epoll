@@ -32,7 +32,7 @@ let time = process.hrtime(); // Get start time.
 poller.add(inputfd, Epoll.EPOLLPRI);
 
 // Print interrupt rate to console after 5 seconds.
-setTimeout(() => {
+setTimeout(_ => {
   time = process.hrtime(time); // Get run time.
   const rate = Math.floor(count / (time[0] + time[1] / 1E9));
   console.log(rate + ' interrupts per second');

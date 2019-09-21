@@ -11,7 +11,7 @@ const Epoll = require('../').Epoll;
 
 const stdin = 0; // fd for stdin
 
-const epoll = new Epoll(() => {});
+const epoll = new Epoll(_ => {});
 
 epoll.add(stdin, Epoll.EPOLLIN).remove(stdin).close();
 

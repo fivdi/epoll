@@ -9,6 +9,6 @@
  */
 const Epoll = require('../').Epoll;
 
-const epoll0 = new Epoll(() => {});
-const epoll1 = new Epoll(() => {});
+const epoll0 = new Epoll(_ => {});
+const epoll1 = new Epoll(_ => {});
 

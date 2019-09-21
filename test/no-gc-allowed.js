@@ -16,7 +16,7 @@ const stdin = 0; // fd for stdin
 
 const time = process.hrtime();
 
-const poller = new Epoll(() => {
+const poller = new Epoll(_ => {
   const timeSoFar = process.hrtime(time);
   if (timeSoFar[0] > 5) {
     // BB faults in ~2.5s, Pi faults in ~?s, so wait about 5s.

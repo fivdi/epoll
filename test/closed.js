@@ -5,9 +5,9 @@ const assert = require('assert');
 
 const stdin = 0;
 
-const poller = new Epoll(() => {});
+const poller = new Epoll(_ => {});
 
-const closePoller = () => {
+const closePoller = _ => {
   if (!poller.closed) {
     poller.remove(stdin).close();
   }
