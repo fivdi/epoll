@@ -6,13 +6,13 @@ node_js:
   - "10"
   - "8"
 env:
-  - CXX=g++-6.3
+  - CXX=g++-6
 addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - g++-6.3
+      - g++-6
 script:
   - npm run lint
   - npm test
