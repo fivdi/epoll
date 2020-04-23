@@ -1,3 +1,9 @@
+Unpublished
+===========
+  * drop support for node.js 6, add support for node.js 14
+  * update dependencies (nan v2.14.1, jshint v2.11.0)
+  * use g++-6 on travis
+
 3.0.0 - Sep 21 2019
 ===================
   * drop support for node.js 4
