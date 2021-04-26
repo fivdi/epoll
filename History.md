@@ -1,3 +1,7 @@
+Unpublished
+===========
+  * update dependencies
+
 4.0.0 - Apr 23 2020
 ===================
   * drop support for node.js 6, add support for node.js 14
