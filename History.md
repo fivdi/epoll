@@ -1,5 +1,6 @@
 Unpublished
 ===========
+  * update performance numbers
   * drop support for node.js 8 and 13, add support for node.js 15 & 16
   * update dependencies
 

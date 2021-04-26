@@ -53,13 +53,13 @@ GPIO interrupt.
 ## Example - Watching Buttons
 
 The following example shows how epoll can be used to detect interrupts from a
-momentary push-button connected to GPIO #4 (pin P1-7) on the Raspberry Pi.
+momentary push-button connected to GPIO4 (pin P1-7) on the Raspberry Pi.
 The source code is available in the
 [example directory](https://github.com/fivdi/epoll/tree/master/example/watch-button)
 and can easily be modified for using a different GPIO on the Pi or a different
 platform such as the BeagleBone.
 
-The first step is to export GPIO #4 as an interrupt generating input using
+The first step is to export GPIO4 as an interrupt generating input using
 the export bash script from the examples directory.
 
 ```
@@ -114,7 +114,7 @@ setTimeout(_ => {
 }, 30000);
 ```
 
-When watch-button has terminated, GPIO #4 can be unexported using the
+When watch-button has terminated, GPIO4 can be unexported using the
 unexport bash script.
 
 ```
@@ -137,9 +137,9 @@ The source code is available in the
 and can easily be modified to use different GPIOs on the Raspberry Pi or a
 different platform such as the BeagleBone.
 
-In this example, GPIO #7 is wired to one end of a 1kΩ current limiting
-resistor and GPIO #8 is wired to the other end of the resistor. GPIO #7 is an
-input and GPIO #8 is an output.
+In this example, GPIO7 is wired to one end of a 1kΩ current limiting
+resistor and GPIO8 is wired to the other end of the resistor. GPIO7 is an
+input and GPIO8 is an output.
 
 The first step is to export GPIOs #7 and #8 using the export bash script from
 the examples directory.
@@ -231,11 +231,9 @@ echo 8 > /sys/class/gpio/unexport
 
 Here are some results from the "Interrupts Per Second" example.
 
-**Raspberry Pi 3, 1.2Ghz, Raspbian:**
+**Raspberry Pi 4 Model B, Raspberry Pi OS (March 4th 2021,  Debian 10.8):**
 
 node | epoll | kernel | interrupts / sec
 :---: | :---: | :---: | ---:
-v10.7.0 | v2.0.2 | 4.14.50-v7+ | 22468
-v8.11.3 | v2.0.2 | 4.14.50-v7+ | 21022
-v6.14.3 | v2.0.2 | 4.14.50-v7+ | 22745
+v16.0.0 | v4.0.1 | 5.10.17-v7l+ | 20112
 
