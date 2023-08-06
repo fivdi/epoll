@@ -2,6 +2,7 @@ Unpublished
 ===========
 
   * update dependencies
+  * update information related to supported versions
 
 4.0.1 - Apr 26 2020
 ===================
